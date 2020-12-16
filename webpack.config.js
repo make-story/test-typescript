@@ -2,13 +2,14 @@
 const path = require('path'); 
 const fs = require('fs');
 const mkdir = require('mkdirp'); // 폴더생성 모듈 (하위 폴더까지 생성)
-const webpackMerge = require('webpack-merge'); // 여러 웹팩 설정값 결합 - webpackMerge({설정1}, {설정2}, ...)
+//const webpackMerge = require('webpack-merge'); // 여러 웹팩 설정값 결합 - webpackMerge({설정1}, {설정2}, ...) - (4.x 와 5.x 이상 버전 사용방법 차이 있음)
+const { merge } = require('webpack-merge');
 const paths = require(path.resolve(__dirname, './config/paths'));
 const env = require(path.resolve(__dirname, './config/env'));
 const manifestWrite = require(path.resolve(__dirname, './config/manifest-write'));
 
 // webpack plugin 
-//const ManifestPlugin = require('webpack-manifest-plugin'); // 빌드 결과 json 생성 (2.x 와 3.x 이상 버전 사용방법 차이 있음)
+//const ManifestPlugin = require('webpack-manifest-plugin'); // 빌드 결과 json 생성 - (2.x 와 3.x 이상 버전 사용방법 차이 있음)
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin'); // 순환 종속(import) 의존성 감지 (http://sudheerjonna.com/blog/2019/01/27/how-to-detect-and-avoid-cyclic-dependencies-in-javascript/)
 //const CopyPlugin = require('copy-webpack-plugin'); // 개별 파일 또는 전체 디렉토리를 빌드 디렉토리에 복사
@@ -96,7 +97,8 @@ let setOutput = (config={}) => {
 
 // 필수 플러그인 관련 설정 
 let setPlugins = (config={}) => {
-	config = webpackMerge(config, {
+	//config = webpackMerge(config, {
+	config = merge(config, {
 		plugins: [
 			// 순환 improt 검사
 			// 순환 종속성에 대한 일반적인 수정은 다른 모듈에 필요한 변수를 내 보낸 후 파일 끝에 가져 오기를 두는 것
@@ -340,11 +342,13 @@ module.exports = (environment, argv) => {
 			
 			break;
 		case 'development':
-			config = webpackMerge(configBase, configDevelopment); 
+			//config = webpackMerge(configBase, configDevelopment); 
+			config = merge(configBase, configDevelopment); 
 			//config = Object.assign({}, configBase, configDevelopment); // 배열의 경우 merge 가 아닌, assign 마지막 파라미터 값으로 덮어쓰는(기존값 지우고 마지막 값 적용) 형태
 			break;
 		case 'production':
-			config = webpackMerge(configBase, configProduction);
+			//config = webpackMerge(configBase, configProduction);
+			config = merge(configBase, configProduction); 
 			//config = Object.assign({}, configBase, configProduction);
 			break;
 	}
@@ -360,6 +364,7 @@ module.exports = (environment, argv) => {
 			break;
 		case 'vue':
 			config = webpackMerge(config, configVue);
+			config = merge(config, configVue);
 			break;
 		case 'ec':
 			// 웹팩 여러개 실행 

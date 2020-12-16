@@ -35,6 +35,7 @@ const TerserPlugin = require('terser-webpack-plugin'); // 자바스크립트 코
 //const DirectoryNamedWebpackPlugin = require("directory-named-webpack-plugin"); // 웹팩 4 전용
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // 웹팩4 부터는 extract-text-webpack-plugin 을 CSS에 사용해서는 안됩니다. 대신 mini-css-extract-plugin을 사용
 //const NpmInstallPlugin = require('npm-install-webpack-plugin'); // 개발 중 누락 된 종속성 자동 설치
+//const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 // 날짜
 let getDatetime = () => {
@@ -75,7 +76,8 @@ module.exports = {
 		//'test': ['@babel/polyfill', 'eventsource-polyfill', 'src/javascript/entry.js'],
 		//'module2': 'src/javascript/module2.js',
 		//'circular': 'src/javascript/index.js', // 순환 종속 테스트 
-		'test': 'src/index.ts'
+		//'index': 'src/index.ts',
+		'test': 'src/test.ts'
 	},
 
 	// 경로나 확장자를 처리할 수 있게 도와주는 옵션
@@ -112,16 +114,19 @@ module.exports = {
 		symlinks: false,
 
 		//
-		/*plugins: [
-			new DirectoryNamedWebpackPlugin({
+		plugins: [
+			/*new DirectoryNamedWebpackPlugin({
 				exclude: /node_modules/,
 				include: [
 					path.resolve(__dirname, '../ec-static-common/src/js/'),
 					path.resolve(__dirname, '../ec-static-component/src/js/'),
 					path.resolve(__dirname, '../ec-display-cjmall-frontweb/src/js/')
 				]
-			})
-		],*/
+			}),*/
+			/*new TsconfigPathsPlugin({ 
+				configFile: path.resolve(paths.appPath, 'tsconfig.json') 
+			}),*/
+		],
 	},
 
 	// 모듈처리 방법 (로더 등)
@@ -148,11 +153,15 @@ module.exports = {
 		rules: [
 			// 템플릿 관련 
 			{
-				test: /\.ejs$/,
+				test: /\.(html|ejs)$/,
 				exclude: /node_modules/, // 제외
 				use: {
 					loader: "ejs-loader", // npm install --save ejs-loader ejs-webpack-loader
-					options: {}
+					options: {
+						//variable: 'data',
+						//interpolate : '\\{\\{(.+?)\\}\\}',
+						//evaluate : '\\[\\[(.+?)\\]\\]'
+					}
 				}
 			},
 			// 자바스크립트 관련 (트랜스파일러 등)
@@ -162,8 +171,8 @@ module.exports = {
 				//include: path.join(__dirname), // 대상
 				exclude: /node_modules/, // 제외
 				use: {
-					// .babelrc 바벨 기본설정파일 확인필요
-					loader: 'babel-loader',  // npm install --save-dev @babel/core babel-loader @babel/preset-react @babel/preset-env 
+					// .babelrc 있다면 해당 파일을 먼저 참조 하며, 없을 경우 webpack options 에 부여한 presets plugins 을 참조
+					loader: 'babel-loader',  // npm install --save-dev babel-loader @babel/preset-env 
 					options: {
 						// presets
 						// @babel/preset-env를 설정하여, babel에서 미리 정의해둔 환경으로 ES6에서 ES5로 변환
@@ -184,10 +193,8 @@ module.exports = {
 						],
 
 						// plugins 
-						// 다이나믹 import (System.import 는 더이상 사용되지 않습니다.)
-						// import 방식이 require.ensure보다 더 좋습니다. (import 방식은 catch 를 활용해 에러가 났을 때 대처)
 						plugins: [
-							'@babel/plugin-syntax-dynamic-import', // npm i -D @babel/plugin-syntax-dynamic-import
+							'@babel/plugin-syntax-dynamic-import', // 다이나믹 import (System.import 는 더이상 사용되지 않습니다.) - import 방식이 require.ensure보다 더 좋습니다. (import 방식은 catch 를 활용해 에러가 났을 때 대처)
 							'@babel/plugin-proposal-class-properties', // class property 관련된 문제를 해결
 							'@babel/plugin-proposal-object-rest-spread' // … 변수 spread 과 관련된 문제
 						], 
@@ -195,12 +202,16 @@ module.exports = {
 				}
 			},
 			// Typescript
+			// https://github.com/TypeStrong/ts-loader
 			{
 				test: /\.(ts|tsx)$/,
 				exclude: /node_modules/,
 				use: [
 					{
 						loader: 'ts-loader',
+						options: {
+							transpileOnly: true
+						}
 					},
 				],
 			},

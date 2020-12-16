@@ -7,3 +7,9 @@ export function makePerson(name: string, age: number) {
 export function testMakePerson() {
     console.log(makePerson('YSM', 22), makePerson('유성민', 33));
 };
+
+console.log('TEST!!!');
+const $root = document.querySelector('#root');
+if($root) {
+    $root.textContent = 'TEST!!!';
+}

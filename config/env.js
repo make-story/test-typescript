@@ -74,7 +74,7 @@ const setBuildConsoleLog = () => {
 	process.env.BUILD_NUMBER && console.log('[env] BUILD_NUMBER', process.env.BUILD_NUMBER); // 예: '9'
 	//process.env.BUILD_ID && console.log('[env] BUILD_ID', process.env.BUILD_ID); // 예: '9' - 젠킨스에서 사용하는 고유값 
 
-	// 젠킨스에서 설정으로 통해 수동으로 추가한 환경변수 
+	// 젠킨스에서 수동(관리자가 설정)으로 추가한 환경변수 
 	process.env.PROJECT && console.log('[env] PROJECT', process.env.PROJECT); // react 등 별도 프로젝트 빌드 
 	process.env.ACTIVE && console.log('[env] ACTIVE', process.env.ACTIVE); // 사용자 설정값, 개발환경(dev/qa/stg/prd), 웹팩의 모드(development/production)가 아닌 개발환경
 };

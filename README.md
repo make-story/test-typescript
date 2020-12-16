@@ -35,3 +35,13 @@ declare module "json!*" {
   const json: any;
   export = json;
 }
+
+> webpack-dev-server 실행시 오류 'Error: Cannot find module 'webpack-cli/bin/config-yargs'
+webpack 과 webpack-dev-server 버전이 서로간 충돌
+"webpack": "4.41.2",
+"webpack-cli": "3.3.10",
+"webpack-dev-server": "^3.11.0",
+
+> eslint
+이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정
+$ yarn add eslint eslint-plugin-import @typescript-eslint/parser

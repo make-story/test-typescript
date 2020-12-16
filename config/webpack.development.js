@@ -16,6 +16,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); // dev server 사용�
 module.exports = {
 	// 개발모드(로컬 개발환경 서버) 설정
 	mode: 'development',
+	output: {
+		publicPath: '', // publicPath 초기화!
+	},
 	devtool: 'source-map',
 	devServer: {
 		// 기본값은 "localhost"
@@ -26,14 +29,12 @@ module.exports = {
 		// 기본값은 8080
 		port: 9000,
 		
-		// contentBase 
 		// 정적파일을 제공할 경로 (기본값은 output.path)
 		/*
-		contentBase = output.publicPath 동일해야 한다.
-		output.publicPath 값이 설정된 경우, contentBase 값도 동일해야 하며, 
+		output.publicPath 가 설정되어 있을 경우, contentBase 값을 설정해줘야 한다.
 		http://<host 설정주소>:<port 설정포트>/<contentBase 경로입력> (예를 들어, http://0.0.0.0:9000/local/test/webpack/ )으로 접근 한다.
 		*/
-		//contentBase: path.resolve(__dirname, 'public'),
+		//contentBase: path.resolve(__dirname, '../public'),
 		//contentBase: `/${env.active}/${env.build}/`, 
 		//contentBase: `/${env.active}/${env.build}/webpack/`, 
 
@@ -103,15 +104,15 @@ module.exports = {
 	plugins: [
 		// 번들 된 파일을 <script />로 로드한 html 파일을 자동으로 생성해 주는 plugin - (개발환경에서 사용하기 위한 플러그인)
 		// https://github.com/jantimon/html-webpack-plugin
-		// output.publicPath 가 어떻게 수정되었는지 확인 후 설정 
-		// (output.path 경로에서 자동으로 빌드 리소스를 가져오는데, output.publicPath 설정할 경우 가져올 경로가 변경된다.)
+		// output.publicPath 값이 설정되어 있을 경우, devServer.contentBase 값 설정이 필요하다.
+		// (output.path 경로에서 자동으로 빌드 리소스를 가져오는데, output.publicPath 설정할 경우 가져올 경로가 변경된다. 즉, publicPath 주석처리 필요)
 		new HtmlWebpackPlugin({
-			//filename: 'index.html',
+			//filename: path.resolve(__dirname, '../public/index.html'),
 			template: path.resolve(__dirname, '../pages/webpack-dev.ejs'),
 			templateParameters: function(compilation, assets, options) {
 				let gulp;
 				/*
-				// assets
+				assets
 				{
 					"css": [ "main.css" ],
 					"js": [ "assets/head_bundle.js", "assets/main_bundle.js"],
@@ -128,22 +129,20 @@ module.exports = {
 				}
 				*/
 				//console.log('[webpack template] compilation', compilation);
-				console.log('[webpack template] assets', assets);
-				console.log('[webpack template] options', options);
-				console.log(compilation.getStats().toJson());
+				//console.log('[webpack template] assets', assets);
+				//console.log('[webpack template] options', options);
+				//console.log(compilation.options);
+				//console.log(compilation.getStats().toJson());
 
 				// gulp 에서 만든 라이브러리 파일 가져오기 
-				gulp = manifestRead({name: 'library'});
+				//gulp = manifestRead({name: 'library'});
 				
 				// ejs 템플릿 엔진을 사용할 경우, 해당 페이지에 데이터 주입
 				// ejs-loader 가 웹팩에 설정되어 있어야 한다
 				return {
 					title: 'Webpack Test Page',
-					gulp, // gulp 빌드 파일 
 					webpack: assets, // javascript, css 등 번들링 결과물 EJS 템플릿에 주입 
-					options: options,
-					webpackConfig: compilation.options,
-				}
+				};
 			},
 			inject: false,
 			minify: false,
