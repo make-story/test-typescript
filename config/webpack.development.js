@@ -110,24 +110,26 @@ module.exports = {
 			//filename: path.resolve(__dirname, '../public/index.html'),
 			template: path.resolve(__dirname, '../pages/webpack-dev.ejs'),
 			templateParameters: function(compilation, assets, options) {
-				let gulp;
 				/*
 				assets
 				{
 					"css": [ "main.css" ],
 					"js": [ "assets/head_bundle.js", "assets/main_bundle.js"],
 					"chunks": {
-					"head": {
-						"entry": "assets/head_bundle.js",
-						"css": [ "main.css" ]
-					},
-					"main": {
-						"entry": "assets/main_bundle.js",
-						"css": []
-					},
+						"head": {
+							"entry": "assets/head_bundle.js",
+							"css": [ "main.css" ]
+						},
+						"main": {
+							"entry": "assets/main_bundle.js",
+							"css": []
+						},
 					}
 				}
 				*/
+				let { css=[], js=[] } = assets && typeof assets === 'object' ? assets : {};
+				let gulp;
+
 				//console.log('[webpack template] compilation', compilation);
 				//console.log('[webpack template] assets', assets);
 				//console.log('[webpack template] options', options);
@@ -141,7 +143,9 @@ module.exports = {
 				// ejs-loader 가 웹팩에 설정되어 있어야 한다
 				return {
 					title: 'Webpack Test Page',
-					webpack: assets, // javascript, css 등 번들링 결과물 EJS 템플릿에 주입 
+					// javascript, css 등 번들링 결과물 EJS 템플릿에 주입 
+					css,
+					js,
 				};
 			},
 			inject: false,

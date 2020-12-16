@@ -5,29 +5,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title><%=title%>></title>
+<title><%=title%></title>
 <!-- 번들 CSS //-->
-<% 
-if(webpack && Array.isArray(webpack.css)) {
-	webpack.css.forEach(function(src) { 
-%>
+<% Array.isArray(css) && css.forEach(function(src) { %>
 	<link rel="stylesheet" href="<%= src %>">
-<% 
-	}); 
-}
-%>
+<% }); %>
 </head>
 <body>
 <div id="root"></div>
 <!-- 번들 JS //-->
-<%
-if(webpack && Array.isArray(webpack.js)) {
-	webpack.js.forEach(function(src) { 
-%>
+<% Array.isArray(js) && js.forEach(function(src) { %>
 	<script src="<%=src%>"></script>
-<% 
-	}); 
-}
-%>
+<% }); %>
 </body>
 </html>
