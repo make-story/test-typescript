@@ -63,8 +63,8 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 
 
 # 타입 (Type)
-> ':'를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.
-> '대상이되는것:그것의타입'
+> ':'를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.  
+> '대상이되는것:그것의타입'  
 
 - String
 ```javascript
@@ -184,9 +184,9 @@ function test(this: 타입) {
 ----------
 
 # <Type> 과 as Type
-> (타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환)
-> (타입 단언 문법은 <Type> 과 as Type 으로 두 종류)
-> (JSX 를 사용하는 경우 <Type> 키워드는 JSX 의 문법과 겹치기 때문에 불편)
+> (타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환)  
+> (타입 단언 문법은 <Type> 과 as Type 으로 두 종류)  
+> (JSX 를 사용하는 경우 <Type> 키워드는 JSX 의 문법과 겹치기 때문에 불편)  
 
 ```javascript
 let hello: number = 1;
@@ -201,7 +201,7 @@ let hello: number = 1;
 
 
 # 타입 별칭 (Type Aliases)
-> ('type' 키워드)
+> ('type' 키워드)  
 
 ```javascript
 // string 타입을 사용할 때
@@ -231,7 +231,7 @@ type User<T> = {
 
 
 # 인터페이스
-> (미리 정의한 약속, 규칙을 의미)
+> (미리 정의한 약속, 규칙을 의미)  
 1. 객체(JSON)의 스펙
 2. 함수 파라미터, 반환 타입
 3. 배열과 객체를 접근 방식
@@ -548,8 +548,8 @@ josh.design(); // design web
 
 
 # 제네릭 (Generics)
-> (한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)
-> (타입을 마치 함수의 파라미터처럼 사용하는 것)
+> (한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)  
+> (타입을 마치 함수의 파라미터처럼 사용하는 것)  
 
 ```javascript
 function getText<T>(text: T): T {
