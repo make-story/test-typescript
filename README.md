@@ -183,10 +183,10 @@ function test(this: 타입) {
 
 ----------
 
-# <Type> 과 as Type
+# `<Type>` 과 `as Type`
 > (타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환)  
-> (타입 단언 문법은 <Type> 과 as Type 으로 두 종류)  
-> (JSX 를 사용하는 경우 <Type> 키워드는 JSX 의 문법과 겹치기 때문에 불편)  
+> (타입 단언 문법은 `<Type>` 과 as Type 으로 두 종류)  
+> (JSX 를 사용하는 경우 `<Type>` 키워드는 JSX 의 문법과 겹치기 때문에 불편)  
 
 ```javascript
 let hello: number = 1;
@@ -267,7 +267,7 @@ let ysm: nameImpl = {
 ```
 
 - 읽기 전용 배열  
-(ReadonlyArray<T> 타입을 사용)
+(ReadonlyArray`<T>` 타입을 사용)
 ```javascript
 let arr: ReadonlyArray<number> = [1,2,3];
 
