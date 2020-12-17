@@ -161,8 +161,8 @@ function sum(a: number, b = '100'): number {
 (파라미터의 여러 인자들을 하나의 배열로 받음)
 ```javascript
 function sum(a: number, ...nums: number[]): number {
-  const total = 0;
-  for (let key in nums) {
+  let total = 0;
+  for(let key in nums) {
     total += nums[key];
   }
   return a + total;
