@@ -51,10 +51,10 @@ webpack 과 webpack-dev-server 버전이 서로간 충돌
 "webpack": "4.41.2",
 "webpack-cli": "3.3.10",
 "webpack-dev-server": "^3.11.0",
-````
+```
 
 # eslint
-이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정
+이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정  
 ```bash
 $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 ```
@@ -66,36 +66,36 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 > `:`를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.  
 > `타입설정대상:타입명시`  
 
-- String
+- String  
 ```javascript
 let str: string = 'hi';
 ```
 
-- Number
+- Number  
 ```javascript
 let num: number = 10;
 ```
 
-- Boolean
+- Boolean  
 ```javascript
 let isLoggedIn: boolean = false;
 ```
 
-- Array
+- Array  
 ```javascript
 let arr: number[] = [1,2,3];
 // 또는
 let arr: Array<number> = [1,2,3];
 ```
 
-- Tuple
-(튜플은 배열의 길이가 고정되고 각 요소의 타입이 지정되어 있는 배열 형식을 의미)
+- Tuple  
+(튜플은 배열의 길이가 고정되고 각 요소의 타입이 지정되어 있는 배열 형식을 의미)  
 ```javascript
 let arr: [string, number] = ['hi', 10];
 ```
 
-- Enum
-(특정 값(상수)들의 집합을 의미)
+- Enum  
+(특정 값(상수)들의 집합을 의미)  
 ```javascript
 enum Avengers { Capt, IronMan, Thor }
 let hero: Avengers = Avengers.Capt;
@@ -104,16 +104,16 @@ enum Avengers { Capt, IronMan, Thor }
 let hero: Avengers = Avengers[0];
 ```
 
-- Any
-(모든 타입에 대해서 허용한다는 의미)
+- Any  
+(모든 타입에 대해서 허용한다는 의미)  
 ```javascript
 let str: any = 'hi';
 let num: any = 10;
 let arr: any = ['a', 2, true];
 ```
 
-- Void
-(변수에는 undefined와 null만 할당하고, 함수에는 반환 값을 설정할 수 없는 타입)
+- Void  
+(변수에는 undefined와 null만 할당하고, 함수에는 반환 값을 설정할 수 없는 타입)  
 ```javascript
 let unuseful: void = undefined;
 function notuse(): void {
@@ -121,8 +121,8 @@ function notuse(): void {
 }
 ```
 
-- Never
-(함수의 끝에 절대 도달하지 않는다는 의미)
+- Never  
+(함수의 끝에 절대 도달하지 않는다는 의미)  
 ```javascript
 function neverEnd(): never {
   while (true) {
@@ -135,7 +135,7 @@ function neverEnd(): never {
 
 
 # 함수 (Function)
-- 함수의 반환 값에 타입을 정하지 않을 때는 void라도 사용
+- 함수의 반환 값에 타입을 정하지 않을 때는 void라도 사용  
 ```javascript
 function text(): void {
   console.log('ysm');
@@ -145,7 +145,7 @@ function sum(a: number, b: number): number {
 }
 ```
 
-- 타입스크립트에서는 함수의 인자를 모두 필수 값으로 간주
+- 타입스크립트에서는 함수의 인자를 모두 필수 값으로 간주  
 (선택적 사용 변수는 '?' 사용)
 ```javascript
 function sum(a: number, b?: number): number {
@@ -153,15 +153,15 @@ function sum(a: number, b?: number): number {
 }
 ```
 
-- 파라미터의 초기값
+- 파라미터의 초기값  
 ```javascript
 function sum(a: number, b = '100'): number {
   return a + b;
 }
 ```
 
-- ES6 REST문법
-(파라미터의 여러 인자들을 하나의 배열로 받음)
+- ES6 REST문법  
+(파라미터의 여러 인자들을 하나의 배열로 받음)  
 ```javascript
 function sum(a: number, ...nums: number[]): number {
   let total = 0;
@@ -173,8 +173,8 @@ function sum(a: number, ...nums: number[]): number {
 sum(1, 2, 3, 4, 5);
 ```
 
-- this
-타입스크립트에서 this가 가리키는 것을 명시가능
+- this  
+타입스크립트에서 this가 가리키는 것을 명시가능  
 ```
 function test(this: 타입) {
 
@@ -221,10 +221,10 @@ type User<T> = {
 }
 ```
 
-- 타입, 인터페이스 차이
+- 타입, 인터페이스 차이  
 타입의 확장 가능 / 불가능 여부  
 인터페이스는 확장이 가능한데 반해 타입 별칭은 확장이 불가능  
-(가능한한 type 보다는 interface로 선언해서 사용하는 것을 추천)
+(가능한한 type 보다는 interface로 선언해서 사용하는 것을 추천)  
 
 
 ----------
@@ -249,15 +249,15 @@ let person = { age: 28 };
 age(person);
 ```
 
-- 선택적 사용
-('?' 사용)
+- 선택적 사용  
+('?' 사용)  
 ```
 interface 인터페이스이름 {
   속성?: 타입;
 }
 ```
 
-- 읽기 전용 
+- 읽기 전용  
 ```javascript
 interface nameImpl {
   readonly name: string;
@@ -282,7 +282,7 @@ arr[2] = 'Capt'; // Error!
 ```
 
 
-- 타입 체킹
+- 타입 체킹  
 ```javascript
 interface CraftBeer {
   brand?: string;
@@ -302,7 +302,7 @@ interface CraftBeer {
 ```
 
 
-- 함수
+- 함수  
 ```javascript
 interface testImpl {
   (name: string, age: number): boolean; // 함수 전체 모양 (파라미터 타입, 반환 타입)
@@ -328,7 +328,7 @@ const toArray: numberOperation = (arg1: any, arg2: any): any[] => { // error: Ty
 };
 ```
 
-- 클래스 
+- 클래스  
 ```javascript
 interface NameImpl {
   name: string;
@@ -344,8 +344,8 @@ class Name implements NameImpl {
 }
 ```
 
-- 덕 타이핑 (Duck typing)
-TypeScript의 덕 타이핑은 어떤 객체가 특정 인터페이스에서 명시하는 메소드를 가지고 있다면 해당 객체가 그 인터페이스를 구현한 것으로 보는 것
+- 덕 타이핑 (Duck typing)  
+TypeScript의 덕 타이핑은 어떤 객체가 특정 인터페이스에서 명시하는 메소드를 가지고 있다면 해당 객체가 그 인터페이스를 구현한 것으로 보는 것  
 ```javascript
 interface Quackable {
   quack(): void;
@@ -371,8 +371,8 @@ makeSomeNoiseWith(new Duck()); // OK
 makeSomeNoiseWith(new Person()); // OK
 ```
 
-- Indexable
-프로퍼티 접근자(Property accessor)
+- Indexable  
+프로퍼티 접근자(Property accessor)  
 ```javascript
 const dict = {
   foo: 1,
@@ -390,7 +390,7 @@ const dict: Indexable = {
 Object.keys(dict).forEach(k => console.log(dict[k])); // OK
 ```
 
-- 인터페이스 확장
+- 인터페이스 확장  
 ```javascript
 interface NameImpl {
   name: string;
@@ -403,7 +403,7 @@ person.name = 'ysm';
 person.age = 30;
 ```
 
-- 하이브리드
+- 하이브리드  
 ```javascript
 interface CraftBeer {
   (beer: string): string;
@@ -428,7 +428,7 @@ brewedBeer.brew();
 
 
 # 연산자를 통한 타입 정의 
-- Union Type ('|' 연산자)
+- Union Type ('|' 연산자)  
 ```javascript
 function test(text: string | number) {
   
@@ -458,7 +458,7 @@ function pd(someone: Person | Developer) {
 }
 ```
 
-- Intersection Type ('&' 연산자)
+- Intersection Type ('&' 연산자)  
 ```javascript
 interface Person {
   name: string;
@@ -485,8 +485,8 @@ type PD = Person & Developer;
 
 
 # 클래스 (Class)
-- readonly
-(읽기 전용)
+- readonly  
+(읽기 전용)  
 ```javascript
 class Developer {
     readonly name: string;
@@ -498,7 +498,7 @@ let ysm = new Developer("유성민");
 console.log(ysm.name);
 ```
 
-- Accessor (geter, seter)
+- Accessor (geter, seter)  
 ```javascript
 class Developer {
   private name: string;
@@ -519,8 +519,8 @@ josh.name = 'Josh Bolton'; // Error
 josh.name = 'Josh';
 ```
 
-- 추상 클래스 (Abstract Class)
-(인터페이스와 비슷하나 추상 클래스는 특정 클래스의 상속 대상이 되는 클래스)
+- 추상 클래스 (Abstract Class)  
+(인터페이스와 비슷하나 추상 클래스는 특정 클래스의 상속 대상이 되는 클래스)  
 ```javascript
 abstract class Developer {
   abstract coding(): void; // 'abstract'가 붙으면 상속 받은 클래스에서 무조건 구현해야 함
@@ -561,9 +561,9 @@ getText<number>(10);
 getText<boolean>(true);
 ```
 
-- any 타입과 같은 것 아닌가?
+- any 타입과 같은 것 아닌가?  
 (함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음)  
-(any라는 타입은 타입 검사를 하지 않기 때문)
+(any라는 타입은 타입 검사를 하지 않기 때문)  
 ```javascript
 function logText(text: any): any {
   return text;
@@ -578,7 +578,7 @@ const text = logText<string>("Hello Generic");
 const text = logText("Hello Generic");
 ```
 
-- 배열 제네릭 타입
+- 배열 제네릭 타입  
 ```javascript
 function logText<T>(text: T[]): T[] {
   console.log(text.length); // 제네릭 타입이 배열이기 때문에 `length`를 허용합니다.
@@ -593,7 +593,7 @@ function logText<T>(text: Array<T>): Array<T> {
 }
 ```
 
-- 인터페이스
+- 인터페이스  
 ```javascript
 interface GenericLogTextFn {
   <T>(text: T): T; // 함수구조
@@ -614,7 +614,7 @@ function logText<T>(text: T): T {
 let myString: GenericLogTextFn<string> = logText;
 ```
 
-- 클래스 (Class)
+- 클래스 (Class)  
 ```javascript
 class GenericMath<T> {
   pi: T;
@@ -624,7 +624,7 @@ class GenericMath<T> {
 let math = new GenericMath<number>();
 ```
 
-- 제네릭 조건 부여
+- 제네릭 조건 부여  
 ```javascript
 interface LengthWise {
   length: number;
@@ -638,7 +638,7 @@ logText(10); // Error, 숫자 타입에는 `length`가 존재하지 않으므로
 logText({ length: 0, value: 'hi' }); // `text.length` 코드는 객체의 속성 접근과 같이 동작하므로 오류 없음
 ```
 
-- 객체의 속성을 제약
+- 객체의 속성을 제약  
 ```javascript
 // 제네릭을 선언할 때 <O extends keyof T> 부분에서 첫 번째 인자로 받는 객체에 없는 속성들은 접근할 수 없게끔 제한
 function getProperty<T, O extends keyof T>(obj: T, key: O) { 
