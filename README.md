@@ -64,6 +64,7 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 
 # 타입 (Type)
 > ':'를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.
+> '대상이되는것:그것의타입'
 
 - String
 ```javascript
@@ -182,6 +183,22 @@ function test(this: 타입) {
 
 ----------
 
+# <Type> 과 as Type
+> (타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환)
+> (타입 단언 문법은 <Type> 과 as Type 으로 두 종류)
+> (JSX 를 사용하는 경우 <Type> 키워드는 JSX 의 문법과 겹치기 때문에 불편)
+
+```javascript
+let hello: number = 1;
+
+(hello as unknown as string).substr(1, 2); 
+// (<string>hello).substr(1, 2); 
+// hello의 타입을 string으로 바꾸고 substr 메소드를 실행한다.
+// unknown : number와 string은 명확히 다른 타입이기 때문에 unknown을 생략할 수 없다.
+```
+
+----------
+
 
 # 타입 별칭 (Type Aliases)
 > ('type' 키워드)
@@ -263,6 +280,27 @@ const arr: ReadonlyStringArray = ['Thor', 'Hulk'];
 arr[2] = 'Capt'; // Error!
 ```
 
+
+- 타입 체킹
+```javascript
+interface CraftBeer {
+  brand?: string;
+}
+function brewBeer(beer: CraftBeer) {
+  // ..
+}
+let myBeer = { brandon: 'what' };
+brewBeer(myBeer as CraftBeer); // 타입 추론을 무시
+
+// 또는 (인터페이스 정의하지 않은 속성들을 추가로 사용하고 싶을 때)
+
+interface CraftBeer {
+  brand?: string;
+  [propName: string]: any;
+}
+```
+
+
 - 함수
 ```javascript
 interface testImpl {
@@ -272,6 +310,21 @@ let test: testImpl;
 test = function(n: string, a: number) {
   return true;
 }
+
+// 또는 
+
+interface numberOperation {
+  (arg1: number, arg2: number): number;
+}
+const sum: numberOperation = (arg1: number, arg2: number): number => {
+  return arg1 + arg2;
+};
+const multiply: numberOperation = (arg1, arg2) => {
+  return arg1 * arg2;
+};
+const toArray: numberOperation = (arg1: any, arg2: any): any[] => { // error: Type '(arg1: any, arg2: any) => any[]' is not assignable to type 'numberOperation'. Type 'any[]' is not assignable to type 'number'.
+  return [arg1, arg2];
+};
 ```
 
 - 클래스 
@@ -288,6 +341,52 @@ class Name implements NameImpl {
   }
   constructor() {}
 }
+```
+
+- 덕 타이핑 (Duck typing)
+TypeScript의 덕 타이핑은 어떤 객체가 특정 인터페이스에서 명시하는 메소드를 가지고 있다면 해당 객체가 그 인터페이스를 구현한 것으로 보는 것
+```javascript
+interface Quackable {
+  quack(): void;
+}
+
+class Duck implements Quackable {
+  quack() {
+    console.log('꽥!');
+  }
+}
+
+class Person {
+  quack() {
+    console.log('나도 꽥!');
+  }
+}
+
+function makeSomeNoiseWith(duck: Quackable): void {
+  duck.quack();
+}
+
+makeSomeNoiseWith(new Duck()); // OK
+makeSomeNoiseWith(new Person()); // OK
+```
+
+- Indexable
+프로퍼티 접근자(Property accessor)
+```javascript
+const dict = {
+  foo: 1,
+  bar: 2
+};
+Object.keys(dict).forEach(k => console.log(dict[k])); // error: Index signature of object type implicitly has an 'any' type.
+
+interface Indexable {
+  [key: string]: any;
+}
+const dict: Indexable = {
+  foo: 1,
+  bar: 2
+};
+Object.keys(dict).forEach(k => console.log(dict[k])); // OK
 ```
 
 - 인터페이스 확장
