@@ -63,8 +63,8 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 
 
 # 타입 (Type)
-> ':'를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.  
-> '대상이되는것:그것의타입'  
+> `:`를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.  
+> `타입설정대상:타입명시`  
 
 - String
 ```javascript
@@ -233,9 +233,10 @@ type User<T> = {
 # 인터페이스
 > (미리 정의한 약속, 규칙을 의미)  
 1. 객체(JSON)의 스펙
-2. 함수 파라미터, 반환 타입
-3. 배열과 객체를 접근 방식
-4. 클래스
+2. 함수의 전체모양 (파라미터타입, 반환타입 등 한번에 타입설정)
+3. 함수 파라미터 타입, 반환 타입 각각 설정
+4. 배열과 객체를 접근 방식
+5. 클래스
 
 ```javascript
 interface ageImpl {
@@ -304,7 +305,7 @@ interface CraftBeer {
 - 함수
 ```javascript
 interface testImpl {
-  (name: string, age: number): boolean;
+  (name: string, age: number): boolean; // 함수 전체 모양 (파라미터 타입, 반환 타입)
 }
 let test: testImpl;
 test = function(n: string, a: number) {
@@ -314,7 +315,7 @@ test = function(n: string, a: number) {
 // 또는 
 
 interface numberOperation {
-  (arg1: number, arg2: number): number;
+  (arg1: number, arg2: number): number; // 함수 전체 모양 (파라미터 타입, 반환 타입)
 }
 const sum: numberOperation = (arg1: number, arg2: number): number => {
   return arg1 + arg2;
