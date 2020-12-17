@@ -153,7 +153,7 @@ module.exports = {
 		rules: [
 			// 템플릿 관련 
 			{
-				test: /\.(html|ejs)$/,
+				test: /\.ejs$/,
 				exclude: /node_modules/, // 제외
 				use: {
 					loader: "ejs-loader", // npm install --save ejs-loader ejs-webpack-loader
@@ -204,7 +204,7 @@ module.exports = {
 			// Typescript
 			// https://github.com/TypeStrong/ts-loader
 			{
-				test: /\.(ts|tsx)$/,
+				test: /\.(ts|tsx)$/, // TypeScript 를 사용 할때는 .ts (리액트 컴포넌트의 경우에는 .tsx) 확장자를 사용
 				exclude: /node_modules/,
 				use: [
 					{
