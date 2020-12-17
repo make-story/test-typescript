@@ -8,7 +8,7 @@ $ tsc --init
 ```
 
 # @types 라이브러리란?
-기존 라이브러리들은 타입이 정의되지 않았다. (Typescript 비호환)
+기존 라이브러리들은 타입이 정의되지 않았다. (Typescript 비호환)  
 대중적으로 흔히 사용되는 자바스크립트 라이브러리는 대부분 @types라는 별칭으로 타입스크립트 추론이 가능한 보조 라이브러리를 제공
 
 # ts, tsx
@@ -21,12 +21,12 @@ $ yarn add --dev babel-loader ts-loader @babel/preset-env @babel/preset-typescri
 ```
 
 # Babel
-.babelrc 있다면 해당 파일을 먼저 참조 하며,
-없을 경우 webpack options에 부여한 presets plugins 을 참조한다. (babel-loader의 typescript preset을 사용)
+.babelrc 있다면 해당 파일을 먼저 참조 하며,  
+없을 경우 webpack options에 부여한 presets plugins 을 참조한다. (babel-loader의 typescript preset을 사용)  
 (webpack 설정 중, @babel/preset-env 의미는 자동으로 브라우저 polyfill 을 맞춘다는 의미)
 
 # Webpack 3 부터는 기본적으로 json-loader 를 포함하고 있다.
-import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.
+import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.  
 ( json type을 typescript에 알려주어야 함)
 
 ```javascript
@@ -47,9 +47,11 @@ declare module "json!*" {
 
 # webpack-dev-server 실행시 오류 'Error: Cannot find module 'webpack-cli/bin/config-yargs'
 webpack 과 webpack-dev-server 버전이 서로간 충돌
+```
 "webpack": "4.41.2",
 "webpack-cli": "3.3.10",
 "webpack-dev-server": "^3.11.0",
+````
 
 # eslint
 이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정
@@ -203,8 +205,8 @@ type User<T> = {
 ```
 
 - 타입, 인터페이스 차이
-타입의 확장 가능 / 불가능 여부
-인터페이스는 확장이 가능한데 반해 타입 별칭은 확장이 불가능
+타입의 확장 가능 / 불가능 여부  
+인터페이스는 확장이 가능한데 반해 타입 별칭은 확장이 불가능  
 (가능한한 type 보다는 interface로 선언해서 사용하는 것을 추천)
 
 
@@ -460,7 +462,7 @@ getText<boolean>(true);
 ```
 
 - any 타입과 같은 것 아닌가?
-(함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음)
+(함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음)  
 (any라는 타입은 타입 검사를 하지 않기 때문)
 ```javascript
 function logText(text: any): any {
