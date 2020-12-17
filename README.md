@@ -182,7 +182,8 @@ function test(this: 타입) {
 
 
 # 타입 별칭 (Type Aliases)
-('type' 키워드)
+> ('type' 키워드)
+
 ```javascript
 // string 타입을 사용할 때
 const name: string = 'capt';
@@ -211,7 +212,7 @@ type User<T> = {
 
 
 # 인터페이스
-(미리 정의한 약속, 규칙을 의미)
+> (미리 정의한 약속, 규칙을 의미)
 1. 객체(JSON)의 스펙
 2. 함수 파라미터, 반환 타입
 3. 배열과 객체를 접근 방식
@@ -446,8 +447,9 @@ josh.design(); // design web
 
 
 # 제네릭 (Generics)
-(한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)
-(타입을 마치 함수의 파라미터처럼 사용하는 것)
+> (한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)
+> (타입을 마치 함수의 파라미터처럼 사용하는 것)
+
 ```javascript
 function getText<T>(text: T): T {
   return text;
