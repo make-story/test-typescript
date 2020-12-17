@@ -60,7 +60,7 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 ----------
 
 
-# Type
+# 타입 (Type)
 > ':'를 이용하여 자바스크립트 코드에 타입을 정의하는 방식을 타입 표기(Type Annotation)라고 합니다.
 
 - String
@@ -381,7 +381,7 @@ type PD = Person & Developer;
 ----------
 
 
-> 클래스 (Class)
+# 클래스 (Class)
 - readonly
 (읽기 전용)
 ```javascript
@@ -445,7 +445,7 @@ josh.design(); // design web
 ----------
 
 
-> 제네릭 (Generics)
+# 제네릭 (Generics)
 (한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)
 (타입을 마치 함수의 파라미터처럼 사용하는 것)
 ```javascript
