@@ -13,6 +13,33 @@
 </head>
 <body>
 <div id="root"></div>
+
+<!-- drag //-->
+<div id="columns">
+	<div class="column" draggable="true">A</div>
+	<div class="column" draggable="true">B</div>
+	<div class="column" draggable="true">C</div>
+</div>
+<div style="clear: both;"></div>
+<div>
+	<button id="top_button">Top(prev)</button>
+	<button id="down_button">Down(next)</button>
+	<div id="radio_test">
+		<div class="column" draggable="true">
+			<input type="radio" name="draggable" value="">
+			<div>A</div>
+		</div>
+		<div class="column" draggable="true">
+			<input type="radio" name="draggable" value="">
+			<div>B</div>
+		</div>
+		<div class="column" draggable="true">
+			<input type="radio" name="draggable" value="">
+			<div>C</div>
+		</div>
+	</div>
+</div>
+
 <!-- 번들 JS //-->
 <% Array.isArray(js) && js.forEach(function(src) { %>
 	<script src="<%=src%>"></script>
