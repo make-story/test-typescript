@@ -1,3 +1,11 @@
+/*
+[리팩토링]
+class 로 변환해야 한다.
+
+*/
+
+
+
 // 마우스 좌표
 interface MouseOffset {
 	readonly left: number,
@@ -14,10 +22,7 @@ const getMouseOffset = (event: any): MouseOffset => {
 };
 //export { getMouseOffset };
 
-/*
-class 로 변환해야 한다.
 
-*/
 // 드래그 미지원 브라우저 대응 
 // 라디오 버튼 선택 후 위/아래 이동 버튼 
 const setMoveRadio = ($target: any, type: string): void => {
@@ -70,33 +75,26 @@ $downButton.addEventListener('click', (event: any): void => setMoveRadio($radioT
 https://developer.mozilla.org/ko/docs/Web/API/HTML_%EB%93%9C%EB%9E%98%EA%B7%B8_%EC%95%A4_%EB%93%9C%EB%A1%AD_API
 https://developer.mozilla.org/ko/docs/Web/API/HTML_%EB%93%9C%EB%9E%98%EA%B7%B8_%EC%95%A4_%EB%93%9C%EB%A1%AD_API/Drag_operations
 
-드래그 이벤트
-
 // draggable
 // https://developer.mozilla.org/ko/docs/Web/HTML/Global_attributes/draggable
 
+// 드래그 이벤트
 // 시작
 dragstart: 드래그하기 시작했을 때 발생
-
 // 진행
 drag: 드래그 할 때 발생
 dragenter: 드롭 대상위에 올라갔을 때 발생
 dragover: 드롭 대상 위로 지나갈 때 발생 (매 수백 밀리초마다 발생한다.)
 dragleave: 적합한 드롭 대상에서 벗어났을 때 발생
-
 // 종료
 drop: 드롭 대상에 드롭했을 때 발생
 dragend: 드래그를 끝냈을 때 발생한다. (마우스 버튼을 떼거나 ESC 키를 누를 때) 
 dragexit: 더 이상 드래그의 직접적인 대상이 아닐 때 발생
-*/
 
 // dataTransfer
 // https://developer.mozilla.org/ko/docs/Web/API/DataTransfer
-
-/*
-class 로 변환해야 한다.
-
 */
+
 // 드래그 대상 
 const $columns: any = document.querySelector('#columns'); // 내부 [draggable="true"]
 
@@ -169,7 +167,7 @@ $columns.addEventListener('drag', (event: any): void => {
 	event.preventDefault();
 
 	// 드래그가 진행되고 있는 위치 표시
-
+	// ...
 });
 $columns.addEventListener('dragenter', (event: any): void => {
 	//console.log('dragenter : 드롭 대상위에 올라갔을 때 발생', event);
@@ -195,7 +193,6 @@ $columns.addEventListener('dragover', (event: any): void => {
 $columns.addEventListener('dragleave', (event: any): void => {
 	//console.log('dragleave : 드롭 가능한 영역에서 벗어났을 때 발생', event);
 });
-
 
 
 // 드롭(drop)의 처리
