@@ -77,7 +77,7 @@ module.exports = {
 		//'module2': 'src/javascript/module2.js',
 		//'circular': 'src/javascript/index.js', // 순환 종속 테스트 
 		//'index': 'src/index.ts',
-		'test': 'src/test.ts'
+		'test': 'src/test.ts',
 	},
 
 	// 경로나 확장자를 처리할 수 있게 도와주는 옵션
@@ -172,7 +172,7 @@ module.exports = {
 				exclude: /node_modules/, // 제외
 				use: {
 					// .babelrc 있다면 해당 파일을 먼저 참조 하며, 없을 경우 webpack options 에 부여한 presets plugins 을 참조
-					loader: 'babel-loader',  // npm install --save-dev babel-loader @babel/preset-env 
+					loader: 'babel-loader',  // npm install --save-dev babel-loader @babel/core @babel/preset-env 
 					options: {
 						// presets
 						// @babel/preset-env를 설정하여, babel에서 미리 정의해둔 환경으로 ES6에서 ES5로 변환
