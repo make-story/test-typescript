@@ -131,6 +131,11 @@ function neverEnd(): never {
 }
 ```
 
+- Element  
+```javascript
+const content: HTMLElement = document.querySelector('#content');
+```
+
 ----------
 
 
