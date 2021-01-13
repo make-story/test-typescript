@@ -1,4 +1,118 @@
-# 타입스크립트 프로젝트 생성
+# 타입스크립트(Typescript)
+
+## 타입주석
+타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 타입을 명시할 수 있습니다.  
+이를 `타입주석(type annoration)이라고 합니다.  
+```
+let 변수이름: 타입 [= 초깃값]
+const 변수이름: 타입 = 초깃값
+```
+```javascript
+let n: number = 1;
+let b: boolean = true;
+let s: string = 'hello';
+let o: object = {};
+```
+
+## 타입추론
+타입스크립트는 자바스크립트와 호환성을 위해 타입 주석 부분을 생략할 수 있습니다.  
+타입스크립트 컴파일러는 다음과 같은 코드를 만나면 대입 연산자 = 오른쪽 값에 따라 변수의 타입을 지정합니다.  
+이를 `타입 추론(type inference)`이라고 합니다.
+```javascript
+let n = 1; // n의 타입을 number로 판단
+let b = true; // b의 타입을 boolean으로 판단
+let s = 'hello'; // s의 타입을 string으로 판단
+let o = {}; // o의 타입을 object로 판단
+```
+
+## any 타입
+타입스크립트는 자바스크립트와 호환을 위해 any라는 이름의 타입을 제공합니다.  
+다음 코드에서 변수 a는 타입이 any이므로 값의 타입과 무관하게 어떤 종류의 값도 저장할 수 있습니다.  
+```javascript
+let a: any = 0;
+a = 'hello';
+a = true;
+a = {};
+```
+
+## undefined 타입
+자바스크립트에서 undefined는 값입니다.  
+변수를 초기화하지 않으면 해당 변수는 undefined값을 가집니다.  
+그러나 타입스크립트에서 undefined는 타입이기도 하고 값이기도 합니다.  
+```javascript
+let u: undefined = undefined;
+u = 1; // Type '1' in not assignable to type 'undefined' 오류 발생
+```
+
+## 타입 변환 (타입 단언)
+
+
+## 타입주석
+타입스크립트 함수 선언문은 자바스크립트 함수 선언문에서 매개변수와 함수 반환값(return type)에 `타입 주석`을 붙이는 다음 형태로 구성됩니다.  
+```
+function 함수이름(매개변수1: 타입1, 매개변수2: 타입2[, ...]): 반환타입 {
+	// 함수몸통...
+}
+```
+```javascript
+function add(a: number, b: number): number {
+	return a + b;
+}
+```
+
+## 함수 시그니처
+변수에 타입이 있듯이 함수 또한 타입이 있는데, 함수의 타입을 `함수 시그니처(function signature)`라고 합니다.  
+함수의 시그니처는 다음과 같은 형태로 표현합니다.
+```
+(매개변수1 타입, 매개변수2 타입[, ...]) => 반환값 타입
+```
+```javascript
+let printMe: (string, number) => void = function(name: string, age: number): void {
+	// ...
+};
+```
+```javascript
+type stringNumberFunc = (string, number) => void; // type 키워드로 타입 별칭 만들기
+let f: stringNumberFunc = function(a: string, b: number): void {}
+let g: stringNumberFunc = function(c: string, d: number): void {}
+```
+
+## 메서드 체인 (method chain)
+`return this;`
+```javascript
+export class Calculator {
+	constructor(public value: number = 0) {
+
+	}
+	add(value: number) {
+		this.value += value;
+		return this;
+	}
+	multiply(value: number) {
+		this.value *= value;
+		return this;
+	}
+}
+let calc = new Calculator();
+let result = calc.add(1).add(2).multiply(3).multiply(4).value;
+```
+
+## 제네릭 방식 타입
+
+## 제네릭 함수의 함수 시그니처
+
+## 생성기 (generator, `yield`)
+
+## 제네릭 함수
+
+
+-----
+
+## 모나드
+
+-----
+
+## 타입스크립트 프로젝트 생성
 
 ```bash
 $ npm install -g typescript
@@ -7,25 +121,25 @@ $ cd <프로젝트명>
 $ tsc --init
 ```
 
-# @types 라이브러리란?
+## @types 라이브러리란?
 기존 라이브러리들은 타입이 정의되지 않았다. (Typescript 비호환)  
 대중적으로 흔히 사용되는 자바스크립트 라이브러리는 대부분 @types라는 별칭으로 타입스크립트 추론이 가능한 보조 라이브러리를 제공  
 
-# ts, tsx
+## ts, tsx
 TypeScript 를 사용 할때는 .ts (리액트 컴포넌트의 경우에는 .tsx) 확장자를 사용  
 
-# Webpack
+## Webpack
 ```bash
 $ yarn add --dev webpack webpack-cli webpack-dev-server 
 $ yarn add --dev babel-loader ts-loader @babel/preset-env @babel/preset-typescript
 ```
 
-# Babel
+## Babel
 .babelrc 있다면 해당 파일을 먼저 참조 하며,  
 없을 경우 webpack options에 부여한 presets plugins 을 참조한다. (babel-loader의 typescript preset을 사용)   
 (webpack 설정 중, @babel/preset-env 의미는 자동으로 브라우저 polyfill 을 맞춘다는 의미)  
 
-# Webpack 3 부터는 기본적으로 json-loader 를 포함하고 있다.
+## Webpack 3 부터는 기본적으로 json-loader 를 포함하고 있다.
 import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.    
 (json type을 typescript에 알려주어야 함)  
 
@@ -46,7 +160,7 @@ declare module "json!*" {
 }
 ```
 
-# webpack-dev-server 실행시 오류 'Error: Cannot find module 'webpack-cli/bin/config-yargs'
+## webpack-dev-server 실행시 오류 'Error: Cannot find module 'webpack-cli/bin/config-yargs'
 webpack 과 webpack-dev-server 버전이 서로간 충돌  
 ```
 "webpack": "4.41.2",
@@ -54,7 +168,7 @@ webpack 과 webpack-dev-server 버전이 서로간 충돌
 "webpack-dev-server": "^3.11.0",
 ```
 
-# eslint
+## eslint
 이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정   
 ```bash
 $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
