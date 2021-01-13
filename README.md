@@ -9,10 +9,10 @@ $ tsc --init
 
 # @types 라이브러리란?
 기존 라이브러리들은 타입이 정의되지 않았다. (Typescript 비호환)  
-대중적으로 흔히 사용되는 자바스크립트 라이브러리는 대부분 @types라는 별칭으로 타입스크립트 추론이 가능한 보조 라이브러리를 제공
+대중적으로 흔히 사용되는 자바스크립트 라이브러리는 대부분 @types라는 별칭으로 타입스크립트 추론이 가능한 보조 라이브러리를 제공  
 
 # ts, tsx
-TypeScript 를 사용 할때는 .ts (리액트 컴포넌트의 경우에는 .tsx) 확장자를 사용
+TypeScript 를 사용 할때는 .ts (리액트 컴포넌트의 경우에는 .tsx) 확장자를 사용  
 
 # Webpack
 ```bash
@@ -22,31 +22,32 @@ $ yarn add --dev babel-loader ts-loader @babel/preset-env @babel/preset-typescri
 
 # Babel
 .babelrc 있다면 해당 파일을 먼저 참조 하며,  
-없을 경우 webpack options에 부여한 presets plugins 을 참조한다. (babel-loader의 typescript preset을 사용)  
-(webpack 설정 중, @babel/preset-env 의미는 자동으로 브라우저 polyfill 을 맞춘다는 의미)
+없을 경우 webpack options에 부여한 presets plugins 을 참조한다. (babel-loader의 typescript preset을 사용)   
+(webpack 설정 중, @babel/preset-env 의미는 자동으로 브라우저 polyfill 을 맞춘다는 의미)  
 
 # Webpack 3 부터는 기본적으로 json-loader 를 포함하고 있다.
-import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.  
-( json type을 typescript에 알려주어야 함)
+import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.    
+(json type을 typescript에 알려주어야 함)  
 
 ```javascript
-// javascript
 // tsconfig.json
 {
-  //...
-  "typeRoots": [
-    "typings.d.ts"
-  ],
+	//...
+	"typeRoots": [
+		"typings.d.ts"
+	],
 }
+```
+```javascript
 // typings.d.ts
 declare module "json!*" {
-  const json: any;
-  export = json;
+	const json: any;
+	export = json;
 }
 ```
 
 # webpack-dev-server 실행시 오류 'Error: Cannot find module 'webpack-cli/bin/config-yargs'
-webpack 과 webpack-dev-server 버전이 서로간 충돌
+webpack 과 webpack-dev-server 버전이 서로간 충돌  
 ```
 "webpack": "4.41.2",
 "webpack-cli": "3.3.10",
@@ -54,7 +55,7 @@ webpack 과 webpack-dev-server 버전이 서로간 충돌
 ```
 
 # eslint
-이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정  
+이전에는 TS로 작업할 때 tslint를 썼지만, eslint로 커버가 가능하기 때문에 tslint는 deprecated 될 예정   
 ```bash
 $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 ```
@@ -117,7 +118,7 @@ let arr: any = ['a', 2, true];
 ```javascript
 let unuseful: void = undefined;
 function notuse(): void {
-  console.log('sth');
+	console.log('sth');
 }
 ```
 
@@ -125,9 +126,9 @@ function notuse(): void {
 (함수의 끝에 절대 도달하지 않는다는 의미)  
 ```javascript
 function neverEnd(): never {
-  while (true) {
+	while (true) {
 
-  }
+	}
 }
 ```
 
@@ -143,10 +144,10 @@ const content: HTMLElement = document.querySelector('#content');
 - 함수의 반환 값에 타입을 정하지 않을 때는 void라도 사용  
 ```javascript
 function text(): void {
-  console.log('ysm');
+	console.log('ysm');
 }
 function sum(a: number, b: number): number {
-  return a + b;
+	return a + b;
 }
 ```
 
@@ -154,14 +155,14 @@ function sum(a: number, b: number): number {
 (선택적 사용 변수는 '?' 사용)
 ```javascript
 function sum(a: number, b?: number): number {
-  return a + b;
+	return a + b;
 }
 ```
 
 - 파라미터의 초기값  
 ```javascript
 function sum(a: number, b = '100'): number {
-  return a + b;
+	return a + b;
 }
 ```
 
@@ -169,11 +170,11 @@ function sum(a: number, b = '100'): number {
 (파라미터의 여러 인자들을 하나의 배열로 받음)  
 ```javascript
 function sum(a: number, ...nums: number[]): number {
-  let total = 0;
-  for(let key in nums) {
-    total += nums[key];
-  }
-  return a + total;
+	let total = 0;
+	for(let key in nums) {
+		total += nums[key];
+	}
+	return a + total;
 }
 sum(1, 2, 3, 4, 5);
 ```
@@ -217,12 +218,12 @@ type MyName = string;
 const name: MyName = 'capt';
 
 type Developer = {
-  name: string;
-  skill: string;
+	name: string;
+	skill: string;
 }
 
 type User<T> = {
-  name: T
+	name: T
 }
 ```
 
@@ -245,10 +246,10 @@ type User<T> = {
 
 ```javascript
 interface ageImpl {
-  age: number;
+	age: number;
 }
 function age(obj: ageImpl) {
-  console.log(obj.age);
+	console.log(obj.age);
 }
 let person = { age: 28 };
 age(person);
@@ -258,17 +259,17 @@ age(person);
 ('?' 사용)  
 ```
 interface 인터페이스이름 {
-  속성?: 타입;
+	속성?: 타입;
 }
 ```
 
 - 읽기 전용  
 ```javascript
 interface nameImpl {
-  readonly name: string;
+	readonly name: string;
 }
 let ysm: nameImpl = {
-  name: '유성민'
+	name: '유성민'
 };
 ```
 
@@ -280,7 +281,7 @@ let arr: ReadonlyArray<number> = [1,2,3];
 // 또는
 
 interface ReadonlyStringArray {
-  readonly [index: number]: string;
+	readonly [index: number]: string;
 }
 const arr: ReadonlyStringArray = ['Thor', 'Hulk'];
 arr[2] = 'Capt'; // Error!
@@ -290,10 +291,10 @@ arr[2] = 'Capt'; // Error!
 - 타입 체킹  
 ```javascript
 interface CraftBeer {
-  brand?: string;
+	brand?: string;
 }
 function brewBeer(beer: CraftBeer) {
-  // ..
+	// ..
 }
 let myBeer = { brandon: 'what' };
 brewBeer(myBeer as CraftBeer); // 타입 추론을 무시
@@ -301,8 +302,8 @@ brewBeer(myBeer as CraftBeer); // 타입 추론을 무시
 // 또는 (인터페이스 정의하지 않은 속성들을 추가로 사용하고 싶을 때)
 
 interface CraftBeer {
-  brand?: string;
-  [propName: string]: any;
+	brand?: string;
+	[propName: string]: any;
 }
 ```
 
@@ -310,42 +311,42 @@ interface CraftBeer {
 - 함수  
 ```javascript
 interface testImpl {
-  (name: string, age: number): boolean; // 함수 전체 모양 (파라미터 타입, 반환 타입)
+	(name: string, age: number): boolean; // 함수 전체 모양 (파라미터 타입, 반환 타입)
 }
 let test: testImpl;
 test = function(n: string, a: number) {
-  return true;
+	return true;
 }
 
 // 또는 
 
 interface numberOperation {
-  (arg1: number, arg2: number): number; // 함수 전체 모양 (파라미터 타입, 반환 타입)
+	(arg1: number, arg2: number): number; // 함수 전체 모양 (파라미터 타입, 반환 타입)
 }
 const sum: numberOperation = (arg1: number, arg2: number): number => {
-  return arg1 + arg2;
+	return arg1 + arg2;
 };
 const multiply: numberOperation = (arg1, arg2) => {
-  return arg1 * arg2;
+	return arg1 * arg2;
 };
 const toArray: numberOperation = (arg1: any, arg2: any): any[] => { // error: Type '(arg1: any, arg2: any) => any[]' is not assignable to type 'numberOperation'. Type 'any[]' is not assignable to type 'number'.
-  return [arg1, arg2];
+	return [arg1, arg2];
 };
 ```
 
 - 클래스  
 ```javascript
 interface NameImpl {
-  name: string;
-  setName(name: string): void;
+	name: string;
+	setName(name: string): void;
 }
 
 class Name implements NameImpl {
-  name: string = 'TEST';
-  setName(n: string) {
-    this.name = n;
-  }
-  constructor() {}
+	name: string = 'TEST';
+	setName(n: string) {
+		this.name = n;
+	}
+	constructor() {}
 }
 ```
 
@@ -353,23 +354,23 @@ class Name implements NameImpl {
 TypeScript의 덕 타이핑은 어떤 객체가 특정 인터페이스에서 명시하는 메소드를 가지고 있다면 해당 객체가 그 인터페이스를 구현한 것으로 보는 것  
 ```javascript
 interface Quackable {
-  quack(): void;
+	quack(): void;
 }
 
 class Duck implements Quackable {
-  quack() {
-    console.log('꽥!');
-  }
+	quack() {
+		console.log('꽥!');
+	}
 }
 
 class Person {
-  quack() {
-    console.log('나도 꽥!');
-  }
+	quack() {
+		console.log('나도 꽥!');
+	}
 }
 
 function makeSomeNoiseWith(duck: Quackable): void {
-  duck.quack();
+	duck.quack();
 }
 
 makeSomeNoiseWith(new Duck()); // OK
@@ -380,17 +381,17 @@ makeSomeNoiseWith(new Person()); // OK
 프로퍼티 접근자(Property accessor)  
 ```javascript
 const dict = {
-  foo: 1,
-  bar: 2
+	foo: 1,
+	bar: 2
 };
 Object.keys(dict).forEach(k => console.log(dict[k])); // error: Index signature of object type implicitly has an 'any' type.
 
 interface Indexable {
-  [key: string]: any;
+	[key: string]: any;
 }
 const dict: Indexable = {
-  foo: 1,
-  bar: 2
+	foo: 1,
+	bar: 2
 };
 Object.keys(dict).forEach(k => console.log(dict[k])); // OK
 ```
@@ -398,10 +399,10 @@ Object.keys(dict).forEach(k => console.log(dict[k])); // OK
 - 인터페이스 확장  
 ```javascript
 interface NameImpl {
-  name: string;
+	name: string;
 }
 interface PersonImpl extends NameImpl {
-  age: number;
+	age: number;
 }
 let person = {} as PersonImpl;
 person.name = 'ysm';
@@ -411,16 +412,16 @@ person.age = 30;
 - 하이브리드  
 ```javascript
 interface CraftBeer {
-  (beer: string): string;
-  brand: string;
-  brew(): void;
+	(beer: string): string;
+	brand: string;
+	brew(): void;
 }
 
 function myBeer(): CraftBeer {
-  let my = (function(beer: string) {}) as CraftBeer;
-  my.brand = 'Beer Kitchen';
-  my.brew = function() {};
-  return my;
+	let my = (function(beer: string) {}) as CraftBeer;
+	my.brand = 'Beer Kitchen';
+	my.brew = function() {};
+	return my;
 }
 
 let brewedBeer = myBeer();
@@ -436,27 +437,27 @@ brewedBeer.brew();
 - Union Type ('|' 연산자)  
 ```javascript
 function test(text: string | number) {
-  
+	
 }
 function person(age: number | string) {
-  if(typeof age === 'number') {
-    return age;
-  }
-  if(typeof age === 'string') {
-    return age;
-  }
-  return new TypeError('type number or string');
+	if(typeof age === 'number') {
+		return age;
+	}
+	if(typeof age === 'string') {
+		return age;
+	}
+	return new TypeError('type number or string');
 }
 
 // 또는
 
 interface Person {
-  name: string;
-  age: number;
+	name: string;
+	age: number;
 }
 interface Developer {
-  name: string;
-  skill: string;
+	name: string;
+	skill: string;
 }
 function pd(someone: Person | Developer) {
  
@@ -466,21 +467,21 @@ function pd(someone: Person | Developer) {
 - Intersection Type ('&' 연산자)  
 ```javascript
 interface Person {
-  name: string;
-  age: number;
+	name: string;
+	age: number;
 }
 interface Developer {
-  name: string;
-  skill: number;
+	name: string;
+	skill: number;
 }
 type PD = Person & Developer;
 
 // 결과적으로 PD 타입은
 /*
 {
-  name: string;
-  age: number;
-  skill: string;
+	name: string;
+	age: number;
+	skill: string;
 }
 */
 ```
@@ -494,10 +495,10 @@ type PD = Person & Developer;
 (읽기 전용)  
 ```javascript
 class Developer {
-    readonly name: string;
-    constructor(theName: string) {
-        this.name = theName;
-    }
+		readonly name: string;
+		constructor(theName: string) {
+				this.name = theName;
+		}
 }
 let ysm = new Developer("유성민");
 console.log(ysm.name);
@@ -506,18 +507,18 @@ console.log(ysm.name);
 - Accessor (geter, seter)  
 ```javascript
 class Developer {
-  private name: string;
-  
-  get name(): string {
-    return this.name;
-  }
+	private name: string;
+	
+	get name(): string {
+		return this.name;
+	}
 
-  set name(newValue: string) {
-    if (newValue && newValue.length > 5) {
-      throw new Error('이름이 너무 깁니다');
-    }
-    this.name = newValue;
-  }
+	set name(newValue: string) {
+		if (newValue && newValue.length > 5) {
+			throw new Error('이름이 너무 깁니다');
+		}
+		this.name = newValue;
+	}
 }
 const josh = new Developer();
 josh.name = 'Josh Bolton'; // Error
@@ -528,20 +529,20 @@ josh.name = 'Josh';
 (인터페이스와 비슷하나 추상 클래스는 특정 클래스의 상속 대상이 되는 클래스)  
 ```javascript
 abstract class Developer {
-  abstract coding(): void; // 'abstract'가 붙으면 상속 받은 클래스에서 무조건 구현해야 함
-  drink(): void {
-    console.log('drink sth');
-  }
+	abstract coding(): void; // 'abstract'가 붙으면 상속 받은 클래스에서 무조건 구현해야 함
+	drink(): void {
+		console.log('drink sth');
+	}
 }
 
 class FrontEndDeveloper extends Developer {
-  coding(): void {
-    // Developer 클래스를 상속 받은 클래스에서 무조건 정의해야 하는 메서드
-    console.log('develop web');
-  }
-  design(): void {
-    console.log('design web');
-  }
+	coding(): void {
+		// Developer 클래스를 상속 받은 클래스에서 무조건 정의해야 하는 메서드
+		console.log('develop web');
+	}
+	design(): void {
+		console.log('design web');
+	}
 }
 const dev = new Developer(); // error: cannot create an instance of an abstract class
 const josh = new FrontEndDeveloper();
@@ -559,7 +560,7 @@ josh.design(); // design web
 
 ```javascript
 function getText<T>(text: T): T {
-  return text;
+	return text;
 }
 getText<string>('hi');
 getText<number>(10);
@@ -571,11 +572,11 @@ getText<boolean>(true);
 (any라는 타입은 타입 검사를 하지 않기 때문)  
 ```javascript
 function logText(text: any): any {
-  return text;
+	return text;
 }
 
 function logText<T>(text: T): T {
-  return text;
+	return text;
 }
 // 방법 #1
 const text = logText<string>("Hello Generic");
@@ -586,35 +587,35 @@ const text = logText("Hello Generic");
 - 배열 제네릭 타입  
 ```javascript
 function logText<T>(text: T[]): T[] {
-  console.log(text.length); // 제네릭 타입이 배열이기 때문에 `length`를 허용합니다.
-  return text;
+	console.log(text.length); // 제네릭 타입이 배열이기 때문에 `length`를 허용합니다.
+	return text;
 }
 
 // 또는
 
 function logText<T>(text: Array<T>): Array<T> {
-  console.log(text.length);
-  return text;
+	console.log(text.length);
+	return text;
 }
 ```
 
 - 인터페이스  
 ```javascript
 interface GenericLogTextFn {
-  <T>(text: T): T; // 함수구조
+	<T>(text: T): T; // 함수구조
 }
 function logText<T>(text: T): T {
-  return text;
+	return text;
 }
 let myString: GenericLogTextFn = logText; // Okay
 
 // 또는
 
 interface GenericLogTextFn<T> {
-  (text: T): T;
+	(text: T): T;
 }
 function logText<T>(text: T): T {
-  return text;
+	return text;
 }
 let myString: GenericLogTextFn<string> = logText;
 ```
@@ -622,8 +623,8 @@ let myString: GenericLogTextFn<string> = logText;
 - 클래스 (Class)  
 ```javascript
 class GenericMath<T> {
-  pi: T;
-  sum: (x: T, y: T) => T;
+	pi: T;
+	sum: (x: T, y: T) => T;
 }
 
 let math = new GenericMath<number>();
@@ -632,12 +633,12 @@ let math = new GenericMath<number>();
 - 제네릭 조건 부여  
 ```javascript
 interface LengthWise {
-  length: number;
+	length: number;
 }
 
 function logText<T extends LengthWise>(text: T): T {
-  console.log(text.length);
-  return text;
+	console.log(text.length);
+	return text;
 }
 logText(10); // Error, 숫자 타입에는 `length`가 존재하지 않으므로 오류 발생
 logText({ length: 0, value: 'hi' }); // `text.length` 코드는 객체의 속성 접근과 같이 동작하므로 오류 없음
@@ -647,7 +648,7 @@ logText({ length: 0, value: 'hi' }); // `text.length` 코드는 객체의 속성
 ```javascript
 // 제네릭을 선언할 때 <O extends keyof T> 부분에서 첫 번째 인자로 받는 객체에 없는 속성들은 접근할 수 없게끔 제한
 function getProperty<T, O extends keyof T>(obj: T, key: O) { 
-  return obj[key];  
+	return obj[key];  
 }
 let obj = { a: 1, b: 2, c: 3 };
 
