@@ -1,5 +1,11 @@
 # 타입스크립트(Typescript)
 
+> 참고페이지  
+https://typescript-kr.github.io/  
+
+
+-----
+
 ## 타입주석
 타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 타입을 명시할 수 있습니다.  
 이를 `타입주석(type annoration)`이라고 합니다.  
