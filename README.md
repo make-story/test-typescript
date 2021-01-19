@@ -354,7 +354,6 @@ printValue(new Valuable<number[]>([1, 2, 3])); // [1, 2, 3]
 -----
 
 # 타입스크립트 프로젝트 생성
-
 ```bash
 $ npm install -g typescript
 $ mkdir <프로젝트명>
@@ -373,6 +372,7 @@ TypeScript 를 사용 할때는 .ts (리액트 컴포넌트의 경우에는 .tsx
 
 
 ## Webpack
+https://webpack.js.org/guides/typescript/
 ```bash
 $ yarn add --dev webpack webpack-cli webpack-dev-server 
 $ yarn add --dev babel-loader ts-loader @babel/preset-env @babel/preset-typescript
