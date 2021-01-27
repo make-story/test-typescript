@@ -931,8 +931,8 @@ getText<boolean>(true);
 ```
 
 - any 타입과 같은 것 아닌가?  
-(함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음)  
-(any라는 타입은 타입 검사를 하지 않기 때문)  
+함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음  
+any라는 타입은 타입 검사를 하지 않기 때문  
 ```javascript
 function logText(text: any): any {
 	return text;
@@ -993,7 +993,7 @@ class GenericMath<T> {
 let math = new GenericMath<number>();
 ```
 
-- 제네릭 조건 부여  
+- `제네릭 조건 부여`  
 ```javascript
 interface LengthWise {
 	length: number;
@@ -1007,7 +1007,7 @@ logText(10); // Error, 숫자 타입에는 `length`가 존재하지 않으므로
 logText({ length: 0, value: 'hi' }); // `text.length` 코드는 객체의 속성 접근과 같이 동작하므로 오류 없음
 ```
 
-- 객체의 속성을 제약  
+- `객체의 속성을 제약`  
 ```javascript
 // 제네릭을 선언할 때 <O extends keyof T> 부분에서 첫 번째 인자로 받는 객체에 없는 속성들은 접근할 수 없게끔 제한
 function getProperty<T, O extends keyof T>(obj: T, key: O) { 

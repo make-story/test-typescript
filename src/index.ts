@@ -42,7 +42,7 @@ let bad4: IPerson = {
 }*/
 
 class Person1 {
-	name: string
+	name: string | undefined
 	age?: number // ? (물음표)는 있어도 되고, 없어도 되는 선택속성이라는 것을 명시
 }
 let ysm1: Person1 = new Person1();
@@ -51,11 +51,11 @@ ysm1.age = 35;
 
 console.log(ysm1);
 
-const calc = (value: number, cb: (number) => void): void => {
-	let add = (a, b) => a + b;
-	function multiply(a, b) { return a * b }
+const calc = (value: number, callback: (arg0: number) => void): void => {
+	let add = (a: number, b: number): number => a + b;
+	function multiply(a: number, b: number): number { return a * b }
 
 	let result = multiply(add(1, 2), value)
-	cb(result)
+	callback(result)
 }
-calc(30, (result: number) =>console.log(`result is ${result}`)) // result is 90
+calc(30, (result: number) => console.log(`result is ${result}`)); // result is 90

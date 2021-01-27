@@ -76,8 +76,8 @@ module.exports = {
 		//'test': ['@babel/polyfill', 'eventsource-polyfill', 'src/javascript/entry.js'],
 		//'module2': 'src/javascript/module2.js',
 		//'circular': 'src/javascript/index.js', // 순환 종속 테스트 
-		//'index': 'src/index.ts',
-		'test': 'src/test.ts',
+		'index': 'src/index.ts',
+		//'test': 'src/test.ts',
 	},
 
 	// 경로나 확장자를 처리할 수 있게 도와주는 옵션
