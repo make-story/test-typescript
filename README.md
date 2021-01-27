@@ -7,7 +7,7 @@ https://typescript-kr.github.io/
 -----
 
 ## 타입주석
-타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 타입을 명시할 수 있습니다.  
+타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 `타입을 명시`할 수 있습니다.  
 이를 `타입주석(type annoration)`이라고 합니다.  
 ```
 let 변수이름: 타입 [= 초깃값]
@@ -23,7 +23,7 @@ let o: object = {};
 -----
 
 ## 타입추론
-타입스크립트는 자바스크립트와 호환성을 위해 타입 주석 부분을 생략할 수 있습니다.  
+타입스크립트는 `자바스크립트와 호환성을 위해 타입 주석 부분을 생략`할 수 있습니다.  
 타입스크립트 컴파일러는 다음과 같은 코드를 만나면 대입 연산자 = 오른쪽 값에 따라 변수의 타입을 지정합니다.  
 이를 `타입 추론(type inference)`이라고 합니다.
 ```typescript
@@ -37,7 +37,7 @@ let o = {}; // o의 타입을 object로 판단
 
 ## any 타입
 타입스크립트는 `자바스크립트와 호환을 위해 any라는 이름의 타입을 제공`합니다.  
-다음 코드에서 변수 a는 타입이 any이므로 값의 타입과 무관하게 어떤 종류의 값도 저장할 수 있습니다.  
+다음 코드에서 변수 a는 타입이 any이므로 `값의 타입과 무관하게 어떤 종류의 값도 저장`할 수 있습니다.  
 ```typescript
 let a: any = 0;
 a = 'hello';
@@ -58,14 +58,15 @@ u = 1; // Type '1' in not assignable to type 'undefined' 오류 발생
 
 -----
 
-## 타입 변환 (타입 단언)
-타입이 있는 언어들은 특정 타입의 변숫값을 다른 타입의 값으로 변환할 수 있는 기능을 제공합니다. 이를 `타입변환(type conversion)`이라고 합니다.
+## 타입 변환 (타입스크립트는 '타입 단언'이라는 용어로 사용)
+타입이 있는 언어들은 특정 타입의 변숫값을 `다른 타입의 값으로 변환할 수 있는 기능`을 제공합니다.   
+이를 `타입변환(type conversion)`이라고 합니다.
 ```typescript
 let person: object = { name: 'test' };
 console.log(person.name); // 'object' 형식에 'name' 속성이 없습니다. 에러!
 ```
 
-인터페이스 방식
+인터페이스 방식 (추천)
 ```typescript
 interface personObject {
 	name: string,
@@ -80,13 +81,17 @@ let person: object = { name: 'test' };
 (<{name: string}>person).name;
 ```
 
-타입스크립트는 독특하게 타입 변환이 아닌 `타입 단언(type assertion)`이라는 용어를 사용합니다.
+`타입스크립트는 독특하게 타입 변환이 아닌 타입 단언(type assertion)이라는 용어를 사용`합니다.
 ```
 (<타입>객체)
+
 또는
+
 (객체 as 타입)
 ```
-이들은 모두 ES5 자바스크립트 구문이 아닙니다. 따라서 자바스크립트의 타입 변환 구문과 구분하기 위해 `타입 단언`이라는 용어를 사용합니다.  
+
+이들은 모두 ES5 자바스크립트 구문이 아닙니다.  
+따라서 `자바스크립트의 타입 변환 구문과 구분하기 위해 타입 단언이라는 용어를 사용`합니다.  
 ```typescript
 interface INameable {
 	name: string
@@ -99,7 +104,7 @@ console.log(name1, name2); // YSM YSM
 
 -----
 
-## 타입주석
+## 타입주석 (함수 선언문에서 매개변수, 반환값)
 타입스크립트 함수 선언문은 자바스크립트 `함수 선언문에서 매개변수와 함수 반환값(return type)에 타입 주석`을 붙이는 다음 형태로 구성됩니다.  
 ```
 function 함수이름(매개변수1: 타입1, 매개변수2: 타입2[, ...]): 반환타입 {
@@ -114,7 +119,7 @@ function add(a: number, b: number): number {
 
 -----
 
-## 함수 시그니처
+## 함수 시그니처 (함수의 타입)
 변수에 타입이 있듯이 함수 또한 타입이 있는데, `함수의 타입을 함수 시그니처(function signature)`라고 합니다.  
 함수의 시그니처는 다음과 같은 형태로 표현합니다.
 ```
@@ -157,16 +162,15 @@ let result = calc.add(1).add(2).multiply(3).multiply(4).value;
 -----
 
 ## 제네릭 방식 타입
-타입을 `T 와 같은 일종의 변수(타입 변수)로 취급하는 것`을   
-`제네릭(generics)타입`이라고 합니다.  
+타입을 `T 와 같은 일종의 변수(타입 변수)로 취급하는 것`을 `제네릭(generics)타입`이라고 합니다.  
 
 > <u>컴파일러는 T 의 의미를 알 수 있어야 합니다.  
 즉, T 가 타입 변수(type variable)라고 알려줘야 합니다.</u>  
-const 함수이름 = `<타입변수>`(매개변수: 타입변수): 타입변수 => {};
+const 함수이름 = `<타입변수>`(매개변수: 타입변수): 타입변수 => {};  
 
 > T 는 Type의 약자로 다른 언어에서도 제네릭을 선언할 때 관용적으로 많이 사용된다.  
 이 부분에는 식별자로 사용할 수 있는 것이라면 무엇이든 들어갈 수 있다. 이를테면 $나 _도 가능하다는 의미다.  
-하지만 대개의 경우 T를 사용한다. 여기에서 T를 타입 변수(Type variables)라고 한다. 
+하지만 대개의 경우 T를 사용한다. 여기에서 T를 타입 변수(Type variables)라고 한다.   
 
 ```typescript
 const arrayLength = <T>(array: T[]): number => array.length;
@@ -174,8 +178,10 @@ const isEmpty = <T>(array: T[]): boolean => arrayLength<T>(array) == 0;
 
 let numArray: number[] = [1, 2, 3];
 let strArray: string[] = ['Hello', 'World'];
+
 arrayLength(numArray); 
 // 또는 arrayLength<number>(numArray);
+
 isEmpty([]);
 // 또는 isEmpty<number>([]);
 ```
@@ -188,17 +194,16 @@ function toPair<T, U>(a: T, b: U): [ T, U ] {
 }
 toPair<string, number>('1', 1); // [ '1', 1 ]
 ```
-
 <br>
 
 ## 제네릭 함수의 타입 추론
-제네릭 형태로 구현된 함수는 원칙적으로는 `타입변수`를 명시해줘야 합니다.
+`제네릭 형태로 구현된 함수는 원칙적으로는 타입변수를 명시`해줘야 합니다.
 ```typescript
 const identoty = <T>(n: T): T => n;
-console.log(identoty<boolean>(true)); // true
+console.log(identoty<boolean>(true)); // true - 타입 변수 명시
 console.log(identoty(true)); // true - 타입 추론 방식
 ```
-하지만 이런 코드는 번거로워서 타입스크립트는 타입 변수 부분을 생략할 수 있게 합니다.  
+하지만 이런 코드는 번거로워서 `타입스크립트는 타입 변수 부분을 생략할 수 있게 합니다.`   
 타입스크립트는 타입 변수가 생략된 제네릭 함수를 만나면 타입 추론을 통해 생략된 타입을 찾아냅니다.  
 <br>
 
@@ -206,9 +211,12 @@ console.log(identoty(true)); // true - 타입 추론 방식
 타입스크립트는 어떤 경우 `함수 시그니처의 매개변수 부분에 변수 이름을 기입하라고 요구`합니다.  
 ```typescript
 // cb 라는 이름의 매개변수에 함수 시그니처를 사용
-const f = (cb: (a: number, number?) => number): void => {}; // 오류발생!
+const f = (cb: (a: number, number?) => number): void => {}; // 오류발생! - 타입만 있고 변수명은 없음!
 ```
 이런 오류가 발생하면 타입스크립트가 해석하지 못하는 부분에 변수를 삽입하고 이 변수에 타입을 명시해 해결합니다.    
+```typescript
+const f = (cb: (a: number, i?: number) => number): void => {};
+```
 ```typescript
 const f = <T>(cb: (arg: T, i?: number) => number): void => {};
 ```
@@ -216,7 +224,7 @@ const f = <T>(cb: (arg: T, i?: number) => number): void => {};
 -----
 
 ## 타입 수정자 readonly, 불변과 가변
-readonly 타입으로 서언된 매개변숫값을 변경하는 시도가 있으면 문제가 있는 코드라고 알려줘서 불순 함수가 되지 않게 방지합니다.
+`readonly 타입으로 서언된 매개변숫값을 변경하는 시도가 있으면 문제가 있는 코드라고 알려줘서 불순 함수가 되지 않게 방지`합니다.
 ```typescript
 function forcePure(array: readonly number[]) {
 	// ...
@@ -251,7 +259,7 @@ function forcePure(array: readonly number[]) {
 <br>
 
 ## 제네릭 함수
-타입스크립트에서 제네릭 타입은 함수와 인터페이스, 클래스, 타입 별칭에 적용할 수 있으며,  
+타입스크립트에서 `제네릭 타입은 함수와 인터페이스, 클래스, 타입 별칭에 적용`할 수 있으며,  
 꺽쇠 괄호 `<>`으로 타입을 감싼 `<T>, <T, Q>`처럼 표현합니다.
 ```typescript
 // function 키워드 (함수선언식)
@@ -278,8 +286,8 @@ type Type3Func<T, Q, R> = (T, Q) => R; // T와 Q타입 값을 입력 받아 R타
 -----
 
 ## 제네릭 프로그래밍 
-제네릭 타입은 인터페이스나 클래스, 함수, 타입 별칭 등에 사용할 수 있는 기능으로,  
-해당 심벌의 타입을 미리 지정하지 않고 다양한 타입을 대응하려고 할 때 사용합니다.  
+`제네릭 타입은 인터페이스나 클래스, 함수, 타입 별칭 등에 사용할 수 있는 기능`으로,  
+해당 심벌의 `타입을 미리 지정하지 않고 다양한 타입을 대응하려고 할 때 사용`합니다.  
 ```typescript
 // 제네릭 인터페이스 구문
 interface IValueable<T> {
@@ -365,7 +373,11 @@ printValue(new Valuable<number[]>([1, 2, 3])); // [1, 2, 3]
 ## 모나드
 
 
------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+
+
 
 # 타입스크립트 프로젝트 생성
 ```bash
@@ -567,9 +579,9 @@ function test(this: 타입) {
 ----------
 
 # `<Type>` 과 `as Type`
-> (타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환)  
-> (타입 단언 문법은 `<Type>` 과 as Type 으로 두 종류)  
-> (JSX 를 사용하는 경우 `<Type>` 키워드는 JSX 의 문법과 겹치기 때문에 불편)  
+> 타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환  
+> 타입 단언 문법은 `<Type>` 과 as Type 으로 두 종류  
+> JSX 를 사용하는 경우 `<Type>` 키워드는 JSX 의 문법과 겹치기 때문에 불편  
 
 ```javascript
 let hello: number = 1;
@@ -584,7 +596,7 @@ let hello: number = 1;
 
 
 # 타입 별칭 (Type Aliases)
-> ('type' 키워드)  
+> 'type' 키워드  
 
 ```javascript
 // string 타입을 사용할 때
@@ -617,7 +629,7 @@ type Func = (a: number, b: number) => number;
 
 
 # 인터페이스
-> (미리 정의한 약속, 규칙을 의미)  
+> 미리 정의한 약속, 규칙을 의미 
 1. 객체(JSON)의 스펙
 2. 함수의 전체모양 (파라미터타입, 반환타입 등 한번에 타입설정)
 3. 함수 파라미터 타입, 반환 타입 각각 설정
@@ -935,8 +947,8 @@ josh.design(); // design web
 
 
 # 제네릭 (Generics)
-> (한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용)  
-> (타입을 마치 함수의 파라미터처럼 사용하는 것)  
+> 한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용  
+> 타입을 마치 함수의 파라미터처럼 사용하는 것  
 
 ```javascript
 function getText<T>(text: T): T {
