@@ -100,7 +100,7 @@ console.log(name1, name2); // YSM YSM
 -----
 
 ## 타입주석
-타입스크립트 함수 선언문은 자바스크립트 함수 선언문에서 매개변수와 함수 반환값(return type)에 `타입 주석`을 붙이는 다음 형태로 구성됩니다.  
+타입스크립트 함수 선언문은 자바스크립트 `함수 선언문에서 매개변수와 함수 반환값(return type)에 타입 주석`을 붙이는 다음 형태로 구성됩니다.  
 ```
 function 함수이름(매개변수1: 타입1, 매개변수2: 타입2[, ...]): 반환타입 {
 	// 함수몸통...
@@ -115,7 +115,7 @@ function add(a: number, b: number): number {
 -----
 
 ## 함수 시그니처
-변수에 타입이 있듯이 함수 또한 타입이 있는데, 함수의 타입을 `함수 시그니처(function signature)`라고 합니다.  
+변수에 타입이 있듯이 함수 또한 타입이 있는데, `함수의 타입을 함수 시그니처(function signature)`라고 합니다.  
 함수의 시그니처는 다음과 같은 형태로 표현합니다.
 ```
 (매개변수1 타입, 매개변수2 타입[, ...]) => 반환값 타입
@@ -164,6 +164,10 @@ let result = calc.add(1).add(2).multiply(3).multiply(4).value;
 즉, T 가 타입 변수(type variable)라고 알려줘야 합니다.</u>  
 const 함수이름 = `<타입변수>`(매개변수: 타입변수): 타입변수 => {};
 
+> T 는 Type의 약자로 다른 언어에서도 제네릭을 선언할 때 관용적으로 많이 사용된다.  
+이 부분에는 식별자로 사용할 수 있는 것이라면 무엇이든 들어갈 수 있다. 이를테면 $나 _도 가능하다는 의미다.  
+하지만 대개의 경우 T를 사용한다. 여기에서 T를 타입 변수(Type variables)라고 한다. 
+
 ```typescript
 const arrayLength = <T>(array: T[]): number => array.length;
 const isEmpty = <T>(array: T[]): boolean => arrayLength<T>(array) == 0;
@@ -175,6 +179,16 @@ arrayLength(numArray);
 isEmpty([]);
 // 또는 isEmpty<number>([]);
 ```
+
+> 두 개 이상의 타입 변수  
+제네릭 함수나 클래스에서는 두 개 이상의 타입 변수도 사용할 수 있다.   
+```javascript
+function toPair<T, U>(a: T, b: U): [ T, U ] {
+	return [ a, b ];
+}
+toPair<string, number>('1', 1); // [ '1', 1 ]
+```
+
 <br>
 
 ## 제네릭 함수의 타입 추론
@@ -588,6 +602,9 @@ type Developer = {
 type User<T> = {
 	name: T
 }
+
+// 함수 시그니처
+type Func = (a: number, b: number) => number;
 ```
 
 - 타입, 인터페이스 차이  

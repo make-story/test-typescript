@@ -59,3 +59,12 @@ const calc = (value: number, callback: (arg0: number) => void): void => {
 	callback(result)
 }
 calc(30, (result: number) => console.log(`result is ${result}`)); // result is 90
+
+
+/**
+ * 제네릭
+ */
+type t1<T> = (a: T, b: T) => T;
+type t2 = (a: string, b?: string) => string;
+const g1 = <T>(a: T, b: T): T => a;
+g1<number>(1, 2);
