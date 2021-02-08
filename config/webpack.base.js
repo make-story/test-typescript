@@ -77,7 +77,8 @@ module.exports = {
 		//'module2': 'src/javascript/module2.js',
 		//'circular': 'src/javascript/index.js', // 순환 종속 테스트 
 		'index': 'src/index.ts',
-		'generics': 'src/generics.ts',
+		'test': 'src/test/index.ts',
+		'drag': 'src/drag/index.ts',
 	},
 
 	// 경로나 확장자를 처리할 수 있게 도와주는 옵션
@@ -165,7 +166,7 @@ module.exports = {
 				}
 			},
 			// 자바스크립트 관련 (트랜스파일러 등)
-			{
+			/*{
 				test: /\.(js|ts|tsx)$/,
 				exclude: /node_modules|dist/,
 				loader: 'eslint-loader',
@@ -175,7 +176,7 @@ module.exports = {
 					failOnWarning: false,
 					failOnError: false
 				}
-			},
+			},*/
 			{
 				test: /\.js?$/,
 				//test: /\.(js|mjs|jsx|ts|tsx)$/,

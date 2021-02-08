@@ -1,10 +1,4 @@
-/*
-[리팩토링]
-class 로 변환해야 한다.
-
-*/
-
-
+import '../css/drag.css';
 
 // 마우스 좌표
 interface MouseOffset {

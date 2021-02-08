@@ -5,16 +5,13 @@ $ tsc -v
 $ tsc index.ts
 $ node index.js
 */
-import { testMakePerson } from './test';
-
-testMakePerson();
-console.log('Hello World!');
 
 let test1: number = 1;
 let test2: boolean = false;
 let test3: string = 'test';
 let test4: object = {}; 
 let test5: undefined = undefined;
+console.log(test1);
 
 interface IPerson {
 	name: string

@@ -1,10 +1,13 @@
 # 타입스크립트(Typescript)
+타입스크립트는 `일반 변수, 매개 변수(Parameter), 객체 속성(Property)` 등에 `: TYPE`과 같은 형태로 `타입을 지정`할 수 있습니다.  
 
 > 참고페이지  
 https://typescript-kr.github.io/  
+https://heropy.blog/2020/01/27/typescript/  
 
 
 -----
+
 
 ## 타입주석
 타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 `타입을 명시`할 수 있습니다.  
@@ -13,14 +16,389 @@ https://typescript-kr.github.io/
 let 변수이름: 타입 [= 초깃값]
 const 변수이름: 타입 = 초깃값
 ```
+
 ```typescript
 let n: number = 1;
 let b: boolean = true;
 let s: string = 'hello';
-let o: object = {};
 ```
 
+
+## Null과 Undefined  
+`기본적으로 Null과 Undefined는 모든 타입의 하위 타입으로, 각 타입에 할당할 수 있음`   
+```typescript
+let num: number = undefined;
+let str: string = null;
+let obj: { a: 1, b: false } = undefined;
+let arr: any[] = null;
+let und: undefined = null;
+let nul: null = undefined;
+let voi: void = null;
+```
+
+
+## Any  
+`값의 타입과 무관하게 어떤 종류의 값도 저장`할 수 있음
+```typescript
+let any: any = 123;
+any = 'Hello world';
+any = {};
+any = null;
+let any2: any[] = [0, 1, {}, [], 'str', false];
+```
+
+
+## 유니언 (Union) - 'OR' - '|'
+`2개 이상의 타입을 허용하는 경우` 
+```typescript
+let union: (string | number);
+union = 'Hello type!';
+union = 123;
+union = false; // Error - TS2322: Type 'false' is not assignable to type 'string | number'.
+```
+
+
+## 인터섹션 (Intersection) - 'AND' - '&'
+` 2개 이상의 타입을 조합` (자주 사용하는 방법은 아님)
+```typescript
+// 기존 타입들이 조합 가능하다면 인터섹션을 활용할 수 있습니다.
+interface IUser {
+	name: string,
+	age: number
+}
+interface IValidation {
+	isValid: boolean
+}
+const neo: IUser & IValidation = {
+	name: 'Neo',
+	age: 85,
+	isValid: true
+};
+```
+
+
+## readonly    
+```typescript
+let arr1: readonly number[] = [1, 2, 3, 4];
+let arr2: ReadonlyArray<number> = [0, 9, 8, 7];
+```
+
+
+## array  
+```typescript
+let arr1: string[] = ['A', 'B', 'C',];
+let arr2: Array<string> = ['A', 'B', 'C',];
+let arr3: (string | number)[] = ['A', 1, 'B', 2, 3, 4];
+let arr4: Array<string | number> = ['A', 1, 'B', 2, 3, 4];
+```
+
+
+## 인덱싱 가능 타입 (Indexable types)
+arr[2]와 같이 ‘숫자’로 인덱싱하거나 obj['name']과 같이 ‘문자’로 인덱싱하는, 인덱싱 가능 타입(Indexable types)  
+`인덱싱에 사용할 인덱서(Indexer)의 이름과 타입 그리고 인덱싱 결과의 반환 값을 지정`  
+`인덱서의 타입은 string과 number만 지정할 수 있음`  
+```typescript
+interface IItem {
+	[itemIndex: number]: string // Index signature
+}
+let item1: IItem = ['a', 'b', 'c']; // Indexable type
+
+console.log(item1[0]); // 'a' is string.
+console.log(item1[1]); // 'b' is string.
+console.log(item1['0']); // Error - TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
+
+
+// 유니온 활용
+interface IItemUnion {
+	[itemIndex: number]: string | boolean | number[]
+}
+let item2: IItemUnion = ['Hello', false, [1, 2, 3]];
+console.log(item2[0]); // Hello
+console.log(item2[1]); // false
+console.log(item2[2]); // [1, 2, 3]
+```
+
+
+## keyof
+`인덱싱 가능 타입에서 keyof를 사용하면 속성 이름을 타입으로 사용`  
+인덱싱 가능 타입의 속성 이름들이 유니온 타입으로 적용  
+```typescript
+interface ICountries {
+  KR: '대한민국',
+  US: '미국',
+  CP: '중국'
+}
+// key 로 접근
+let country1: keyof ICountries; // 'KR' | 'US' | 'CP'
+country1 = 'KR'; // ok
+country1 = 'RU'; // Error - TS2322: Type '"RU"' is not assignable to type '"KR" | "US" | "CP"'.
+
+// value 로 접근
+let country2: ICountries[keyof ICountries]; // ICountries['KR' | 'US' | 'CP']
+country2 = '대한민국';
+country2 = '러시아'; // Error - TS2322: Type '"러시아"' is not assignable to type '"대한민국" | "미국" | "중국"'.
+```
+
+
+## object    
+`typeof 연산자가 "object"로 반환하는 모든 타입이 해당 됨`  
+```typescript
+let obj: object = {}; 
+let arr: object = [];
+let func: object = function () {};
+let nullValue: object = null;
+let date: object = new Date();
+
+// 보다 정확하게 타입 지정을 하기 위해 다음과 같이 객체 속성(Properties)들에 대한 타입을 개별적으로 지정
+let userA: { name: string, age: number } = {
+	name: 'HEROPY',
+	age: 123
+};
+
+// interface나 type을 사용하는 것을 추천
+interface IUser {
+	name: string,
+ 	age: number
+}
+let userA: IUser = {
+	name: 'HEROPY',
+	age: 123
+};
+let userB: IUser = {
+	name: 'HEROPY',
+	age: false, // Error
+	email: 'thesecon@gmail.com' // Error
+};
+```
+
+
+## interface   
+```typescript
+interface IUser {
+	name: string,
+	age: number,
+	// 속성에 ?를 사용하면 선택적 속성으로 정의
+	isAdmin?: boolean,
+}
+let userArr: IUser[] = [
+	{
+		name: 'name1',
+		age: 10,
+		isAdmin: true,
+	},
+	{
+		name: 'name1',
+		age: 20,
+	}
+];
+
+// 모든 속성이 readonly일 경우, 유틸리티(Utility)나 단언(Assertion) 타입을 활용
+// Readonly Utility
+let user1: Readonly<IUser> = {
+	name: 'Neo',
+	age: 36
+};
+user1.age = 85; // Error
+user1.name = 'Evan'; // Error
+
+// 타입 단언 (Type assertion)
+let user2 = {
+	name: 'Neo',
+	age: 36
+} as const;
+user2.age = 85; // Error
+user2.name = 'Evan'; // Error
+```
+
+## 인터페이스 확장
+`인터페이스도 클래스처럼 extends 키워드를 활용해 상속` 
+또는 `같은 이름의 인터페이스를 여러 개 만들어 기존에 만들어진 인터페이스에 내용을 추가`하는 경우
+```typescript
+interface IAnimal {
+	name: string
+}
+interface ICat extends IAnimal {
+	meow(): string
+}
+
+class Cat implements ICat { // Error - TS2420: Class 'Cat' incorrectly implements interface 'ICat'. Property 'name' is missing in type 'Cat' but required in type 'ICat'.
+	meow() {
+		return 'MEOW~'
+	}
+}
+```
+```typescript
+interface IFullName {
+	firstName: string,
+	lastName: string
+}
+interface IFullName {
+	middleName: string
+}
+
+const fullName: IFullName = {
+	firstName: 'Tomas',
+	middleName: 'Sean',
+	lastName: 'Connery'
+};
+```
+
+
+## 타입 별칭
+`type 키워드를 사용해 새로운 타입 조합`  
+```typescript
+type MyType = string;
+type YourType = string | number | boolean;
+type TUser = { name: string, age: number, isValid: boolean } | [ string, number, boolean ]; // { ... } 또는 [ ... ]
+
+let userA: TUser = {
+	name: 'Neo',
+	age: 85,
+	isValid: true
+};
+let userB: TUser = [
+	'Evan', 
+	36, 
+	false
+];
+
+function someFunc(arg: MyType): YourType {
+	switch (arg) {
+		case 's':
+			return arg.toString(); // string
+		case 'n':
+			return parseInt(arg); // number
+		default:
+			return true; // boolean
+	}
+}
+```
+
+
+
+## Void  
+`Void는 일반적으로 값을 반환하지 않는 함수에서 사용`  
+```typescript
+function hello(msg: string): void {
+	console.log(`Hello ${msg}`);
+}
+```
+
+
+## function   
+`화살표 함수를 이용해 타입을 지정`   
+```typescript
+// myFunc는 2개의 숫자 타입 인수를 가지고, 숫자 타입을 반환하는 함수.
+let myFunc: (arg1: number, arg2: number) => number;
+
+myFunc = function (x, y) {
+	return x + y;
+};
+```
+`함수 타입을 인터페이스로 정의하는 경우, 호출 시그니처(Call signature)라는 것을 사용`   
+```typescript
+interface IUser {
+	name: string
+}
+interface IGetUser {
+	(name: string): IUser
+}
+
+// 매개 변수 이름이 인터페이스와 일치할 필요가 없습니다.
+// 또한 타입 추론을 통해 매개 변수를 순서에 맞게 암시적 타입으로 제공할 수 있습니다.
+const getUser: IGetUser = function (n) { // n is name: string
+	// Find user logic..
+	// ...
+	return user;
+};
+getUser('Heropy');
+```
+
+
+## Tuple  
+Tuple 타입은 배열과 매우 유사  
+차이점이라면 `정해진 타입의 고정된 길이(length) 배열을 표현`   
+```typescript
+let tuple: [string, number];
+tuple = ['a', 1];
+tuple = ['a', 1, 2]; // Error - TS2322
+tuple = [1, 'a']; // Error - TS2322
+
+// 데이터를 개별 변수로 지정하지 않고, 단일 Tuple 타입으로 지정해 사용
+let user: [number, string, boolean] = [1234, 'HEROPY', true];
+console.log(user[0]); // 1234
+console.log(user[1]); // 'HEROPY'
+console.log(user[2]); // true
+
+// Tuple 타입의 배열(2차원 배열)을 사용
+let users: [number, string, boolean][];
+users = [[1, 'Neo', true], [2, 'Evan', false], [3, 'Lewis', true]];
+
+// 값으로 타입을 대신
+let tuple: [1, number];
+tuple = [1, 2];
+tuple = [1, 3];
+tuple = [2, 3]; // Error - TS2322: Type '2' is not assignable to type '1'.
+
+// readonly 키워드를 사용해 읽기 전용 튜플을 생성
+let a: readonly [string, number] = ['Hello', 123];
+a[0] = 'World'; // Error - TS2540: Cannot assign to '0' because it is a read-only property.
+```
+
+
+## Class  
+`인터페이스로 클래스를 정의하는 경우, implements 키워드를 사용`  
+```typescript
+interface IUser {
+	name: string,
+	getName(): string
+}
+
+class User implements IUser {
+	constructor(public name: string) {
+
+	}
+	getName() {
+		return this.name;
+	}
+}
+
+const neo = new User('Neo');
+neo.getName(); // Neo
+```
+Construct signature  
+`new 키워드를 사용해야 하는 경우`  
+```typescript
+interface ICat {
+	name: string
+}
+interface ICatConstructor {
+	new (name: string): ICat; // Construct signature
+}
+
+class Cat implements ICat {
+	constructor(public name: string) {}
+}
+function makeKitten(c: ICatConstructor, n: string) {
+	return new c(n); // ok
+}
+
+const kitten = makeKitten(Cat, 'Lucy');
+console.log(kitten);
+```
+
+
+## Never
+`절대 발생하지 않을 값을 나타내며, 어떠한 타입도 적용할 수 없음`  
+```typescript
+function error(message: string): never {
+	throw new Error(message);
+}
+```
+
+
 -----
+
 
 ## 타입추론
 타입스크립트는 `자바스크립트와 호환성을 위해 타입 주석 부분을 생략`할 수 있습니다.  
@@ -33,32 +411,90 @@ let s = 'hello'; // s의 타입을 string으로 판단
 let o = {}; // o의 타입을 object로 판단
 ```
 
------
 
-## any 타입
-타입스크립트는 `자바스크립트와 호환을 위해 any라는 이름의 타입을 제공`합니다.  
-다음 코드에서 변수 a는 타입이 any이므로 `값의 타입과 무관하게 어떤 종류의 값도 저장`할 수 있습니다.  
+## Non-null
+`!`를 사용하는 Non-null 단언 연산자(Non-null assertion operator)를 통해  
+피연산자가 Nullish(null이나 undefined) 값이 아님을 단언할 수 있는데,  
+변수나 속성에서 간단하게 사용할 수 있기 때문에 유용  
+`특히 컴파일 환경에서 체크하기 어려운 DOM 사용에서 유용`  
 ```typescript
-let a: any = 0;
-a = 'hello';
-a = true;
-a = {};
+// Error - TS2533: Object is possibly 'null' or 'undefined'.
+function fnA(x: number | null | undefined) {
+	return x.toFixed(2);
+}
+
+// if statement
+function fnD(x: number | null | undefined) {
+	if(x) {
+		return x.toFixed(2);
+	}
+}
+
+// Type assertion
+function fnB(x: number | null | undefined) {
+	return (x as number).toFixed(2);
+}
+function fnC(x: number | null | undefined) {
+	return (<number>x).toFixed(2);
+}
+
+// Non-null assertion operator
+function fnE(x: number | null | undefined) {
+	return x!.toFixed(2);
+}
+
+
+// Error - TS2531: Object is possibly 'null'.
+document.querySelector('.menu-item').innerHTML;
+
+// Type assertion
+(document.querySelector('.menu-item') as HTMLDivElement).innerHTML;
+(<HTMLDivElement>document.querySelector('.menu-item')).innerHTML;
+
+// Non-null assertion operator
+document.querySelector('.menu-item')!.innerHTML;
 ```
 
------
 
-## undefined 타입
-자바스크립트에서 undefined는 값입니다.  
-변수를 초기화하지 않으면 해당 변수는 undefined값을 가집니다.  
-그러나 `타입스크립트에서 undefined는 타입이기도 하고 값이기도 합니다.`  
+## 타입 가드 (Guards)
+타입 단언을 여러 번 사용하게 되는 경우 유용  
+`타입 가드는 NAME is TYPE 형태의 타입 술부(Predicate)를 반환 타입으로 명시한 함수`  
 ```typescript
-let u: undefined = undefined;
-u = 1; // Type '1' in not assignable to type 'undefined' 오류 발생
+// 일반적 타입 단언 사용 방식
+function someFunc(val: string | number, isNumber: boolean) {
+	if(isNumber) {
+		(val as number).toFixed(2);
+		isNaN(val as number);
+	}else {
+		(val as string).split('');
+		(val as string).toUpperCase();
+		(val as string).length;
+	}
+}
+```
+```typescript
+// 타입 가드 함수 사용 방식
+function isNumber(val: string | number): val is number { // 타입 가드 함수
+	// typeof, in 그리고 instanceof 연산자 등 사용
+	return typeof val === 'number';
+}
+function someFunc(val: string | number) {
+	if(isNumber(val)) {
+		val.toFixed(2);
+		isNaN(val);
+	}else {
+		val.split('');
+		val.toUpperCase();
+		val.length;
+	}
+}
 ```
 
+
 -----
 
-## 타입 변환 (타입스크립트는 '타입 단언'이라는 용어로 사용)
+
+## 타입변환 (타입스크립트는 '타입단언'이라는 용어로 사용)
 타입이 있는 언어들은 특정 타입의 변숫값을 `다른 타입의 값으로 변환할 수 있는 기능`을 제공합니다.   
 이를 `타입변환(type conversion)`이라고 합니다.
 ```typescript
@@ -102,7 +538,9 @@ let name2 = (obj as INameable).name;
 console.log(name1, name2); // YSM YSM
 ```
 
+
 -----
+
 
 ## 타입주석 (함수 선언문에서 매개변수, 반환값)
 타입스크립트 함수 선언문은 자바스크립트 `함수 선언문에서 매개변수와 함수 반환값(return type)에 타입 주석`을 붙이는 다음 형태로 구성됩니다.  
@@ -117,7 +555,9 @@ function add(a: number, b: number): number {
 }
 ```
 
+
 -----
+
 
 ## 함수 시그니처 (함수의 타입)
 변수에 타입이 있듯이 함수 또한 타입이 있는데, `함수의 타입을 함수 시그니처(function signature)`라고 합니다.  
@@ -137,7 +577,9 @@ let f: stringNumberFunc = function(a: string, b: number): void {}
 let g: stringNumberFunc = function(c: string, d: number): void {}
 ```
 
+
 -----
+
 
 ## 메서드 체인 (method chain)
 `return this;`
@@ -159,7 +601,9 @@ let calc = new Calculator();
 let result = calc.add(1).add(2).multiply(3).multiply(4).value;
 ```
 
+
 -----
+
 
 ## 제네릭 방식 타입
 타입을 `T 와 같은 일종의 변수(타입 변수)로 취급하는 것`을 `제네릭(generics)타입`이라고 합니다.  
@@ -188,7 +632,7 @@ isEmpty([]);
 
 > 두 개 이상의 타입 변수  
 제네릭 함수나 클래스에서는 두 개 이상의 타입 변수도 사용할 수 있다.   
-```javascript
+```typescript
 function toPair<T, U>(a: T, b: U): [ T, U ] {
 	return [ a, b ];
 }
@@ -221,7 +665,9 @@ const f = (cb: (a: number, i?: number) => number): void => {};
 const f = <T>(cb: (arg: T, i?: number) => number): void => {};
 ```
 
+
 -----
+
 
 ## 타입 수정자 readonly, 불변과 가변
 `readonly 타입으로 서언된 매개변숫값을 변경하는 시도가 있으면 문제가 있는 코드라고 알려줘서 불순 함수가 되지 않게 방지`합니다.
@@ -235,7 +681,9 @@ function forcePure(array: readonly number[]) {
 반면에 let 이나 readonly 를 명시하지 않는 변수는 언제든지 값을 변경할 수 있습니다.  
 이런 변수는 변경할 수 있다는 의미로 `'가변(mutable'`변수라고 합니다.  
 
+
 -----
+
 
 ## 반복기 (iterator)
 ```typescript
@@ -252,7 +700,9 @@ function forcePure(array: readonly number[]) {
 
 ```
 
+
 -----
+
 
 ## 함수형 프로그래밍이란?
 함수형 프로그래밍은 순수 함수와 선언형 프로그래밍의 토대 위에 함수 조합(function composition)과 모나드 조합(monadic composition)으로 코드를 설계하고 구현하는 기법입니다.  
@@ -278,12 +728,16 @@ type Type2Func<T, Q> = (T, Q) = > void;
 type Type3Func<T, Q, R> = (T, Q) => R; // T와 Q타입 값을 입력 받아 R타입 값을 반환
 ```
 
+
 -----
+
 
 ## 람다 라이브러리 (함수형 유틸리티 라이브러리)
 
 
+
 -----
+
 
 ## 제네릭 프로그래밍 
 `제네릭 타입은 인터페이스나 클래스, 함수, 타입 별칭 등에 사용할 수 있는 기능`으로,  
@@ -365,17 +819,171 @@ printValue(new Valuable<number[]>([1, 2, 3])); // [1, 2, 3]
 <br>
 
 
-## 제네릭 타입 제약  
+## 제네릭 타입 제약 - 제약 조건(Constraints)   
+`extends 키워드를 사용하는 제약 조건을 추가`  
+`T extends U`  
+```typescript
+interface MyType<T extends string | number> {
+	name: string,
+	value: T
+}
+
+const dataA: MyType<string> = {
+	name: 'Data A',
+	value: 'Hello world'
+};
+const dataB: MyType<number> = {
+	name: 'Data B',
+	value: 1234
+};
+const dataC: MyType<boolean> = { // TS2344: Type 'boolean' does not satisfy the constraint 'string | number'.
+	name: 'Data C',
+	value: true
+};
+const dataD: MyType<number[]> = { // TS2344: Type 'number[]' does not satisfy the constraint 'string | number'.
+	name: 'Data D',
+	value: [1, 2, 3, 4]
+};
+```
+```typescript
+type U = string | number | boolean;
+
+// type 식별자 = 타입 구현
+type MyType<T extends U> = string | T;
+
+// interface 식별자 { 타입 구현 }
+interface IUser<T extends U> {
+	name: string,
+	age: T
+}
+```
+
+
+## 조건부 타입(Conditional Types)
+`제약 조건과 다르게 ‘타입 구현’ 영역에서 사용하는 extends는 삼항 연산자(Conditional ternary operator)를 사용`  
+`T extends U ? X : Y`  
+```typescript
+type U = string | number | boolean;
+
+// type 식별자 = 타입 구현
+type MyType<T> = T extends U ? string : never;
+
+// interface 식별자 { 타입 구현 }
+interface IUser<T> {
+	name: string,
+	age: T extends U ? number : never
+}
+```
+```typescript
+// `T`는 `boolean` 타입으로 제한.
+interface IUser<T extends boolean> {
+	name: string,
+	age: T extends true ? string : number, // `T`의 타입이 `true`인 경우 `string` 반환, 아닌 경우 `number` 반환.
+	isString: T
+}
+
+const str: IUser<true> = {
+	name: 'Neo',
+	age: '12', // String
+	isString: true
+}
+const num: IUser<false> = {
+	name: 'Lewis',
+	age: 12, // Number
+	isString: false
+}
+```
+```typescript
+type MyType<T> =
+	T extends string ? 'Str' :
+	T extends number ? 'Num' :
+	T extends boolean ? 'Boo' :
+	T extends undefined ? 'Und' :
+	T extends null ? 'Nul' :
+	'Obj';
+```
 
 
 -----
 
+
+## 클래스(Class)
+- public  
+어디서나 자유롭게 접근 가능(생략 가능)    
+- protected  
+나와 파생된 후손 클래스 내에서 접근 가능    
+- private  
+내 클래스에서만 접근 가능  
+
+- static  
+정적으로 사용 (속성, 일반 메소드)  
+- readonly  
+읽기 전용으로 사용 (속성)  
+
+```typescript
+class Cat {
+	static legs: number;
+	readonly name: string;
+	constructor() {
+		Cat.legs = 4; // Init static property.
+		this.name = 'test';
+	}
+}
+console.log(Cat.legs); // undefined
+new Cat();
+console.log(Cat.legs); // 4
+
+class Dog {
+	// Init static method.
+	static getLegs() {
+		return 4;
+	}
+}
+console.log(Dog.getLegs()); // 4
+```
+
+
+## 추상(Abstract) 클래스
+```typescript 
+// Abstract Class
+abstract class Animal {
+	abstract name: string; // 파생된 클래스에서 구현해야 합니다.
+	abstract getName(): string; // 파생된 클래스에서 구현해야 합니다.
+}
+class Cat extends Animal {
+	constructor(public name: string) {
+		super();
+	}
+	getName() {
+		return this.name;
+	}
+}
+new Animal(); // Error - TS2511: Cannot create an instance of an abstract class.
+const cat = new Cat('Lucy');
+console.log(cat.getName()); // Lucy
+
+// Interface
+interface IAnimal {
+	name: string;
+	getName(): string;
+}
+class Dog implements IAnimal {
+	constructor(public name: string) {}
+	getName() {
+		return this.name;
+	}
+}
+```
+
+
+-----
+
+
 ## 모나드
 
 
-----------------------------------------------------------------------
-----------------------------------------------------------------------
-----------------------------------------------------------------------
+
+---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- 
 
 
 
@@ -415,7 +1023,7 @@ $ yarn add --dev babel-loader ts-loader @babel/preset-env @babel/preset-typescri
 import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 경우 typescript에 내에서 해당 내역을 처리하지 못한다.    
 (json type을 typescript에 알려주어야 함)  
 
-```javascript
+```typescript
 // tsconfig.json
 {
 	//...
@@ -424,7 +1032,7 @@ import data from 'data.json' 으로 쓰면되는데, typescript 를 같이 쓸 �
 	],
 }
 ```
-```javascript
+```typescript
 // typings.d.ts
 declare module "json!*" {
 	const json: any;
@@ -449,7 +1057,7 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 ```
 
 
-----------
+---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- 
 
 
 # 타입 (Type)
@@ -457,22 +1065,22 @@ $ yarn add eslint eslint-plugin-import @typescript-eslint/parser
 > `타입설정대상:타입명시`  
 
 - String  
-```javascript
+```typescript
 let str: string = 'hi';
 ```
 
 - Number  
-```javascript
+```typescript
 let num: number = 10;
 ```
 
 - Boolean  
-```javascript
+```typescript
 let isLoggedIn: boolean = false;
 ```
 
 - Array  
-```javascript
+```typescript
 let arr: number[] = [1,2,3];
 // 또는
 let arr: Array<number> = [1,2,3];
@@ -480,13 +1088,13 @@ let arr: Array<number> = [1,2,3];
 
 - Tuple  
 (튜플은 배열의 길이가 고정되고 각 요소의 타입이 지정되어 있는 배열 형식을 의미)  
-```javascript
+```typescript
 let arr: [string, number] = ['hi', 10];
 ```
 
 - Enum  
 (특정 값(상수)들의 집합을 의미)  
-```javascript
+```typescript
 enum Avengers { Capt, IronMan, Thor }
 let hero: Avengers = Avengers.Capt;
 // 또는 (인덱스 번호로도 접근)
@@ -496,7 +1104,7 @@ let hero: Avengers = Avengers[0];
 
 - Any  
 (모든 타입에 대해서 허용한다는 의미)  
-```javascript
+```typescript
 let str: any = 'hi';
 let num: any = 10;
 let arr: any = ['a', 2, true];
@@ -504,7 +1112,7 @@ let arr: any = ['a', 2, true];
 
 - Void  
 (변수에는 undefined와 null만 할당하고, 함수에는 반환 값을 설정할 수 없는 타입)  
-```javascript
+```typescript
 let unuseful: void = undefined;
 function notuse(): void {
 	console.log('sth');
@@ -513,7 +1121,7 @@ function notuse(): void {
 
 - Never  
 (함수의 끝에 절대 도달하지 않는다는 의미)  
-```javascript
+```typescript
 function neverEnd(): never {
 	while (true) {
 
@@ -522,7 +1130,7 @@ function neverEnd(): never {
 ```
 
 - Element  
-```javascript
+```typescript
 const content: HTMLElement = document.querySelector('#content');
 ```
 
@@ -531,7 +1139,7 @@ const content: HTMLElement = document.querySelector('#content');
 
 # 함수 (Function)
 - 함수의 반환 값에 타입을 정하지 않을 때는 void라도 사용  
-```javascript
+```typescript
 function text(): void {
 	console.log('ysm');
 }
@@ -542,14 +1150,14 @@ function sum(a: number, b: number): number {
 
 - 타입스크립트에서는 함수의 인자를 모두 필수 값으로 간주  
 (선택적 사용 변수는 '?' 사용)
-```javascript
+```typescript
 function sum(a: number, b?: number): number {
 	return a + b;
 }
 ```
 
 - 파라미터의 초기값  
-```javascript
+```typescript
 function sum(a: number, b = '100'): number {
 	return a + b;
 }
@@ -557,7 +1165,7 @@ function sum(a: number, b = '100'): number {
 
 - ES6 REST문법  
 (파라미터의 여러 인자들을 하나의 배열로 받음)  
-```javascript
+```typescript
 function sum(a: number, ...nums: number[]): number {
 	let total = 0;
 	for(let key in nums) {
@@ -576,14 +1184,16 @@ function test(this: 타입) {
 }
 ```
 
+
 ----------
+
 
 # `<Type>` 과 `as Type`
 > 타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환  
 > 타입 단언 문법은 `<Type>` 과 as Type 으로 두 종류  
 > JSX 를 사용하는 경우 `<Type>` 키워드는 JSX 의 문법과 겹치기 때문에 불편  
 
-```javascript
+```typescript
 let hello: number = 1;
 
 (hello as unknown as string).substr(1, 2); 
@@ -592,13 +1202,14 @@ let hello: number = 1;
 // unknown : number와 string은 명확히 다른 타입이기 때문에 unknown을 생략할 수 없다.
 ```
 
+
 ----------
 
 
 # 타입 별칭 (Type Aliases)
 > 'type' 키워드  
 
-```javascript
+```typescript
 // string 타입을 사용할 때
 const name: string = 'capt';
 
@@ -636,7 +1247,7 @@ type Func = (a: number, b: number) => number;
 4. 배열과 객체를 접근 방식
 5. 클래스
 
-```javascript
+```typescript
 interface ageImpl {
 	age: number;
 }
@@ -656,7 +1267,7 @@ interface 인터페이스이름 {
 ```
 
 - 읽기 전용  
-```javascript
+```typescript
 interface nameImpl {
 	readonly name: string;
 }
@@ -667,7 +1278,7 @@ let ysm: nameImpl = {
 
 - 읽기 전용 배열  
 (ReadonlyArray`<T>` 타입을 사용)
-```javascript
+```typescript
 let arr: ReadonlyArray<number> = [1,2,3];
 
 // 또는
@@ -681,7 +1292,7 @@ arr[2] = 'Capt'; // Error!
 
 
 - 타입 체킹  
-```javascript
+```typescript
 interface CraftBeer {
 	brand?: string;
 }
@@ -701,7 +1312,7 @@ interface CraftBeer {
 
 
 - 함수  
-```javascript
+```typescript
 interface testImpl {
 	(name: string, age: number): boolean; // 함수 전체 모양 (파라미터 타입, 반환 타입)
 }
@@ -727,7 +1338,7 @@ const toArray: numberOperation = (arg1: any, arg2: any): any[] => { // error: Ty
 ```
 
 - 클래스  
-```javascript
+```typescript
 interface NameImpl {
 	name: string;
 	setName(name: string): void;
@@ -744,7 +1355,7 @@ class Name implements NameImpl {
 
 - 덕 타이핑 (Duck typing)  
 TypeScript의 덕 타이핑은 어떤 객체가 특정 인터페이스에서 명시하는 메소드를 가지고 있다면 해당 객체가 그 인터페이스를 구현한 것으로 보는 것  
-```javascript
+```typescript
 interface Quackable {
 	quack(): void;
 }
@@ -771,7 +1382,7 @@ makeSomeNoiseWith(new Person()); // OK
 
 - Indexable  
 프로퍼티 접근자(Property accessor)  
-```javascript
+```typescript
 const dict = {
 	foo: 1,
 	bar: 2
@@ -788,8 +1399,8 @@ const dict: Indexable = {
 Object.keys(dict).forEach(k => console.log(dict[k])); // OK
 ```
 
-- 인터페이스 확장  
-```javascript
+- 인터페이스 확장 (`인터페이스도 클래스처럼 extends 키워드를 활용해 상속할 수 있습니다.`)    
+```typescript
 interface NameImpl {
 	name: string;
 }
@@ -802,7 +1413,7 @@ person.age = 30;
 ```
 
 - 하이브리드  
-```javascript
+```typescript
 interface CraftBeer {
 	(beer: string): string;
 	brand: string;
@@ -822,12 +1433,13 @@ brewedBeer.brand = 'Pangyo Craft';
 brewedBeer.brew();
 ```
 
+
 ----------
 
 
 # 연산자를 통한 타입 정의 
 - Union Type ('|' 연산자)  
-```javascript
+```typescript
 function test(text: string | number) {
 	
 }
@@ -857,7 +1469,7 @@ function pd(someone: Person | Developer) {
 ```
 
 - Intersection Type ('&' 연산자)  
-```javascript
+```typescript
 interface Person {
 	name: string;
 	age: number;
@@ -885,7 +1497,7 @@ type PD = Person & Developer;
 # 클래스 (Class)
 - readonly  
 (읽기 전용)  
-```javascript
+```typescript
 class Developer {
 		readonly name: string;
 		constructor(theName: string) {
@@ -897,7 +1509,7 @@ console.log(ysm.name);
 ```
 
 - Accessor (geter, seter)  
-```javascript
+```typescript
 class Developer {
 	private name: string;
 	
@@ -919,7 +1531,7 @@ josh.name = 'Josh';
 
 - 추상 클래스 (Abstract Class)  
 (인터페이스와 비슷하나 추상 클래스는 특정 클래스의 상속 대상이 되는 클래스)  
-```javascript
+```typescript
 abstract class Developer {
 	abstract coding(): void; // 'abstract'가 붙으면 상속 받은 클래스에서 무조건 구현해야 함
 	drink(): void {
@@ -943,6 +1555,7 @@ josh.drink(); // drink sth
 josh.design(); // design web
 ```
 
+
 ----------
 
 
@@ -950,7 +1563,7 @@ josh.design(); // design web
 > 한가지 타입보다 여러 가지 타입에서 동작하는 컴포넌트를 생성하는데 사용  
 > 타입을 마치 함수의 파라미터처럼 사용하는 것  
 
-```javascript
+```typescript
 function getText<T>(text: T): T {
 	return text;
 }
@@ -962,7 +1575,7 @@ getText<boolean>(true);
 - any 타입과 같은 것 아닌가?  
 함수의 인자로 어떤 타입이 들어갔고 어떤 값이 반환되는지는 알 수가 없음  
 any라는 타입은 타입 검사를 하지 않기 때문  
-```javascript
+```typescript
 function logText(text: any): any {
 	return text;
 }
@@ -977,7 +1590,7 @@ const text = logText("Hello Generic");
 ```
 
 - 배열 제네릭 타입  
-```javascript
+```typescript
 function logText<T>(text: T[]): T[] {
 	console.log(text.length); // 제네릭 타입이 배열이기 때문에 `length`를 허용합니다.
 	return text;
@@ -992,7 +1605,7 @@ function logText<T>(text: Array<T>): Array<T> {
 ```
 
 - 인터페이스  
-```javascript
+```typescript
 interface GenericLogTextFn {
 	<T>(text: T): T; // 함수구조
 }
@@ -1013,7 +1626,7 @@ let myString: GenericLogTextFn<string> = logText;
 ```
 
 - 클래스 (Class)  
-```javascript
+```typescript
 class GenericMath<T> {
 	pi: T;
 	sum: (x: T, y: T) => T;
@@ -1022,8 +1635,9 @@ class GenericMath<T> {
 let math = new GenericMath<number>();
 ```
 
-- `제네릭 조건 부여`  
-```javascript
+- `제네릭 조건 부여 ('extends' 키워드)`  
+`T extends U`
+```typescript
 interface LengthWise {
 	length: number;
 }
@@ -1036,8 +1650,74 @@ logText(10); // Error, 숫자 타입에는 `length`가 존재하지 않으므로
 logText({ length: 0, value: 'hi' }); // `text.length` 코드는 객체의 속성 접근과 같이 동작하므로 오류 없음
 ```
 
+```typescript
+// 조건부여 전
+interface MyType<T> {
+  name: string,
+  value: T
+}
+const dataA: MyType<string> = {
+  name: 'Data A',
+  value: 'Hello world'
+};
+const dataD: MyType<number[]> = {
+  name: 'Data D',
+  value: [1, 2, 3, 4]
+};
+```
+```typescript
+// 조건부여 후
+interface MyType<T extends string | number> { // 조건부여!!
+  name: string,
+  value: T
+}
+const dataA: MyType<string> = {
+  name: 'Data A',
+  value: 'Hello world'
+};
+const dataD: MyType<number[]> = { // TS2344: Type 'number[]' does not satisfy the constraint 'string | number'.
+  name: 'Data D',
+  value: [1, 2, 3, 4]
+};
+```
+
+대표적으로 `type` 과 `interface` 키워드를 사용하는 타입 선언은 다음 예제와 같이 `=` 기호를 기준으로 ‘식별자’와 ‘타입 구현’으로 구분할 수 있습니다.  
+제약 조건은 ‘식별자’ 영역에서 사용하는 `extends`에 한합니다.  
+```typescript
+type U = string | number | boolean;
+
+// type 식별자 = 타입 구현
+type MyType<T extends U> = string | T;
+
+// interface 식별자 { 타입 구현 }
+interface IUser<T extends U> {
+  name: string,
+  age: T
+}
+```
+
+
+- 인덱싱 가능 타입(Indexable types)    
+
+
+- `keyof` 
+인덱싱 가능 타입에서 `keyof`를 사용하면 속성 이름을 타입으로 사용할 수 있습니다.
+인덱싱 가능 타입의 속성 이름들이 유니온 타입으로 적용됩니다.
+```typescript
+interface ICountries {
+  KR: '대한민국',
+  US: '미국',
+  CP: '중국'
+}
+let country: keyof ICountries; // 'KR' | 'US' | 'CP'
+country = 'KR'; // ok
+country = 'RU'; // Error - TS2322: Type '"RU"' is not assignable to type '"KR" | "US" | "CP"'.
+```
+
+
+
 - `객체의 속성을 제약`  
-```javascript
+```typescript
 // 제네릭을 선언할 때 <O extends keyof T> 부분에서 첫 번째 인자로 받는 객체에 없는 속성들은 접근할 수 없게끔 제한
 function getProperty<T, O extends keyof T>(obj: T, key: O) { 
 	return obj[key];  
@@ -1048,7 +1728,9 @@ getProperty(obj, "a"); // okay
 getProperty(obj, "z"); // error: "z"는 "a", "b", "c" 속성에 해당하지 않습니다.
 ```
 
+
 ----------
+
 
 # 유틸리티
 > TypeScript는 공통 타입 변환을 용이하게 하기 위해 몇 가지 유틸리티 타입을 제공  
