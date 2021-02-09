@@ -6,10 +6,44 @@ https://typescript-kr.github.io/
 https://heropy.blog/2020/01/27/typescript/  
 
 
+## 유용한 자바스크립트 참고
+- Optional chaining   
+?. 연산자는 . 체이닝 연산자와 유사하게 작동하지만, 만약 참조가 nullish (null 또는 undefined)이라면, 에러가 발생하는 것 대신에 표현식의 리턴 값은 undefined로 단락된다.
+```javascript
+const adventurer = {
+	name: 'Alice',
+	cat: {
+		name: 'Dinah'
+	}
+};
+
+const dogName = adventurer.dog?.name;
+console.log(dogName);
+// expected output: undefined
+
+console.log(adventurer.someNonExistentMethod?.());
+// expected output: undefined
+```
+
+- Nullish 병합 연산자  
+일반적으로 논리 연산자 ||를 사용해 Falsy 체크(0, "", NaN, null, undefined를 확인)하는 경우가 많습니다.  
+여기서 0이나 "" 값을 유효 값으로 사용하는 경우 원치 않는 결과가 발생할 수 있는데, 이럴 때 유용한 Nullish 병합(Nullish Coalescing) 연산자 ??를 사용합니다.  
+```javascript
+const foo = null ?? 'Hello nullish.';
+console.log(foo); // Hello nullish.
+
+const bar = false ?? true;
+console.log(bar); // false
+
+const baz = 0 ?? 12;
+console.log(baz); // 0
+```
+
+
 -----
 
 
-## 타입주석
+## 타입주석 - 타입선언
 타입스크립트는 자바스크립트 변수 선언문을 확장해 다음과 같은 형태로 `타입을 명시`할 수 있습니다.  
 이를 `타입주석(type annoration)`이라고 합니다.  
 ```
@@ -18,9 +52,26 @@ const 변수이름: 타입 = 초깃값
 ```
 
 ```typescript
-let n: number = 1;
-let b: boolean = true;
-let s: string = 'hello';
+// 불린: Boolean
+let isBoolean: boolean;
+let isDone: boolean = false;
+
+// 숫자: Number
+let num: number;
+let integer: number = 6;
+let float: number = 3.14;
+let hex: number = 0xf00d; // 61453
+let binary: number = 0b1010; // 10
+let octal: number = 0o744; // 484
+let infinity: number = Infinity;
+let nan: number = NaN;
+
+// 문자열: String
+let str: string;
+let red: string = 'Red';
+let green: string = "Green";
+let myColor: string = `My color is ${red}.`;
+let yourColor: string = 'Your color is' + green;
 ```
 
 
@@ -45,6 +96,44 @@ any = 'Hello world';
 any = {};
 any = null;
 let any2: any[] = [0, 1, {}, [], 'str', false];
+```
+
+
+## Unknown (알 수 없는 타입)
+`Unknown은 알 수 없는 타입을 의미`  
+일반적인 경우 Unknown은 타입 단언(Assertions)이나 타입 가드(Guards)를 필요  
+```typescript
+let a: any = 123;
+let u: unknown = 123;
+
+let v1: boolean = a; // 모든 타입(any)은 어디든 할당할 수 있습니다.
+let v2: number = u; // 알 수 없는 타입(unknown)은 모든 타입(any)을 제외한 다른 타입에 할당할 수 없습니다.
+let v3: any = u; // OK!
+let v4: number = u as number; // 타입을 단언하면 할당할 수 있습니다.
+```
+`다양한 타입을 반환할 수 있는 API에서 유용`  
+```typescript
+type Result = {
+	success: true,
+	value: unknown
+} | {
+	success: false,
+	error: Error
+}
+export default function getItems(user: IUser): Result {
+	// Some logic...
+	if(id.isValid) {
+		return {
+			success: true,
+			value: ['Apple', 'Banana'] // unknown
+		};
+	}else {
+		return {
+			success: false,
+			error: new Error('Invalid user.')
+		}
+	}
+}
 ```
 
 
@@ -81,15 +170,31 @@ const neo: IUser & IValidation = {
 ```typescript
 let arr1: readonly number[] = [1, 2, 3, 4];
 let arr2: ReadonlyArray<number> = [0, 9, 8, 7];
+
+arrA[0] = 123; // Error - TS2542: Index signature in type 'readonly number[]' only permits reading.
+arrA.push(123); // Error - TS2339: Property 'push' does not exist on type 'readonly number[]'.
+
+arrB[0] = 123; // Error - TS2542: Index signature in type 'readonly number[]' only permits reading.
+arrB.push(123); // Error - TS2339: Property 'push' does not exist on type 'readonly number[]'.
 ```
 
 
 ## array  
 ```typescript
-let arr1: string[] = ['A', 'B', 'C',];
-let arr2: Array<string> = ['A', 'B', 'C',];
-let arr3: (string | number)[] = ['A', 1, 'B', 2, 3, 4];
-let arr4: Array<string | number> = ['A', 1, 'B', 2, 3, 4];
+// 문자열만 가지는 배열
+let fruits1: string[] = ['Apple', 'Banana', 'Mango'];
+let fruits2: Array<string> = ['Apple', 'Banana', 'Mango'];
+
+// 숫자만 가지는 배열
+let oneToSeven1: number[] = [1, 2, 3, 4, 5, 6, 7];
+let oneToSeven2: Array<number> = [1, 2, 3, 4, 5, 6, 7];
+
+// 유니언 타입(다중 타입)
+let array1: (string | number)[] = ['Apple', 1, 2, 'Banana', 'Mango', 3];
+let array2: Array<string | number> = ['Apple', 1, 2, 'Banana', 'Mango', 3];
+
+// any
+let someArr: any[] = [0, 1, {}, [], 'str', false];
 ```
 
 
@@ -142,6 +247,7 @@ country2 = '러시아'; // Error - TS2322: Type '"러시아"' is not assignable 
 
 ## object    
 `typeof 연산자가 "object"로 반환하는 모든 타입이 해당 됨`  
+컴파일러 옵션에서 엄격한 타입 검사(strict)를 true로 설정하면, null은 포함하지 않음  
 ```typescript
 let obj: object = {}; 
 let arr: object = [];
@@ -210,6 +316,7 @@ user2.age = 85; // Error
 user2.name = 'Evan'; // Error
 ```
 
+
 ## 인터페이스 확장
 `인터페이스도 클래스처럼 extends 키워드를 활용해 상속` 
 또는 `같은 이름의 인터페이스를 여러 개 만들어 기존에 만들어진 인터페이스에 내용을 추가`하는 경우
@@ -244,13 +351,15 @@ const fullName: IFullName = {
 ```
 
 
-## 타입 별칭
+## 타입 별칭 (Type Aliases)
 `type 키워드를 사용해 새로운 타입 조합`  
+`일반적인 경우 둘 이상의 조합으로 구성하기 위해 유니온을 많이 사용`  
 ```typescript
 type MyType = string;
 type YourType = string | number | boolean;
 type TUser = { name: string, age: number, isValid: boolean } | [ string, number, boolean ]; // { ... } 또는 [ ... ]
 
+// TUser에서 T는 Type를 의미하는 별칭으로 사용
 let userA: TUser = {
 	name: 'Neo',
 	age: 85,
@@ -346,6 +455,49 @@ a[0] = 'World'; // Error - TS2540: Cannot assign to '0' because it is a read-onl
 ```
 
 
+## Enum (열거형)
+숫자 혹은 문자열 값 집합에 이름(Member)을 부여할 수 있는 타입  
+`값의 종류가 일정한 범위로 정해져 있는 경우 유용`  
+`기본적으로 0부터 시작하며 값은 1씩 증가`  
+```typescript
+enum Week {
+	Sun,
+	Mon,
+	Tue,
+	Wed,
+	Thu,
+	Fri,
+	Sat
+}
+console.log(Week.Mon); // 1
+console.log(Week.Tue); // 2
+```
+`수동으로 값을 변경할 수 있으며, 값을 변경한 부분부터 다시 1씩 증가`  
+```typescript
+enum Week {
+	Sun, // 0
+	Mon = 22,
+	Tue, // 23
+	Wed, // 24
+	Thu, // 25
+	Fri, // 26
+	Sat // 27
+}
+console.log(Week.Mon); // 22
+console.log(Week.Tue); // 23
+```
+`Enum은 숫자 값 열거뿐만아니라 문자열 값으로 초기화할 수 있음`  
+```typescript
+enum Color {
+	Red = 'red',
+	Green = 'green',
+	Blue = 'blue'
+}
+console.log(Color.Red); // red
+console.log(Color['Green']); // green
+```
+
+
 ## Class  
 `인터페이스로 클래스를 정의하는 경우, implements 키워드를 사용`  
 ```typescript
@@ -401,6 +553,7 @@ function error(message: string): never {
 
 
 ## 타입추론
+`명시적으로 타입 선언이 되어있지 않은 경우, 타입스크립트는 타입을 추론해 제공`  
 타입스크립트는 `자바스크립트와 호환성을 위해 타입 주석 부분을 생략`할 수 있습니다.  
 타입스크립트 컴파일러는 다음과 같은 코드를 만나면 대입 연산자 = 오른쪽 값에 따라 변수의 타입을 지정합니다.  
 이를 `타입 추론(type inference)`이라고 합니다.
@@ -410,13 +563,81 @@ let b = true; // b의 타입을 boolean으로 판단
 let s = 'hello'; // s의 타입을 string으로 판단
 let o = {}; // o의 타입을 object로 판단
 ```
+```typescript
+// 변수 num을 초기화하면서 숫자 12를 할당해 Number 타입으로 추론되었고, 
+let num = 12;
+// 따라서 'Hello type!'이라는 String 타입의 값은 할당할 수 없기 때문에 에러가 발생
+num = 'Hello type!'; // TS2322: Type '"Hello type!"' is not assignable to type 'number'.
+```
+
+`타입스크립트가 타입을 추론하는 경우`
+- 초기화된 변수  
+- 기본값이 설정된 매개 변수  
+- 반환 값이 있는 함수  
+
+타입 추론이 엄격하지 않은 타입 선언을 의미하는 것은 아닙니다.  
+따라서 이를 활용해 모든 곳에 타입을 명시할 필요는 없으며, 많은 경우 더 좋은 코드 가독성을 제공할 수 있습니다.
 
 
-## Non-null
+## 타입변환 (타입스크립트는 '타입단언'이라는 용어로 사용)
+`타입 추론을 통해 판단할 수 있는 타입의 범주를 넘는 경우, 더 이상 추론하지 않도록 지시할 수 있음`  
+타입이 있는 언어들은 특정 타입의 변숫값을 `다른 타입의 값으로 변환할 수 있는 기능`을 제공합니다.   
+이를 `타입변환(type conversion)`이라고 합니다.
+```typescript
+let person: object = { name: 'test' };
+console.log(person.name); // 'object' 형식에 'name' 속성이 없습니다. 에러!
+```
+```typescript
+function someFunc(val: string | number, isNumber: boolean) {
+	// some logics
+	if(isNumber) {
+		// 1. '변수 as 타입' 방식
+		(val as number).toFixed(2);
+		// 2. '<타입>변수' 방식
+		// (<number>val).toFixed(2);
+	}
+}
+```
+
+인터페이스 사용을 추천
+```typescript
+interface personObject {
+	name: string,
+};
+let person: personObject = { name: 'test' };
+console.log(person.name);
+```
+
+타입변환 방식
+```typescript
+let person: object = { name: 'test' };
+(<{name: string}>person).name;
+```
+
+`타입스크립트는 독특하게 타입 변환이 아닌 타입 단언(type assertion)이라는 용어를 사용`합니다.
+```
+(<타입>객체)
+또는
+(객체 as 타입)
+```
+
+이들은 모두 ES5 자바스크립트 구문이 아닙니다.  
+따라서 `자바스크립트의 타입 변환 구문과 구분하기 위해 타입 단언이라는 용어를 사용`합니다.  
+```typescript
+interface INameable {
+	name: string
+};
+let obj: object = { name: 'YSM' };
+let name1 = (<INameable>obj).name;
+let name2 = (obj as INameable).name;
+console.log(name1, name2); // YSM YSM
+```
+
+
+## Non-null 단언 연산자 - 특히 컴파일 환경에서 체크하기 어려운 DOM 사용에서 유용
 `!`를 사용하는 Non-null 단언 연산자(Non-null assertion operator)를 통해  
-피연산자가 Nullish(null이나 undefined) 값이 아님을 단언할 수 있는데,  
+피연산자가 `Nullish(null이나 undefined) 값이 아님을 단언`할 수 있는데,  
 변수나 속성에서 간단하게 사용할 수 있기 때문에 유용  
-`특히 컴파일 환경에서 체크하기 어려운 DOM 사용에서 유용`  
 ```typescript
 // Error - TS2533: Object is possibly 'null' or 'undefined'.
 function fnA(x: number | null | undefined) {
@@ -440,10 +661,11 @@ function fnC(x: number | null | undefined) {
 
 // Non-null assertion operator
 function fnE(x: number | null | undefined) {
-	return x!.toFixed(2);
+	return x!.toFixed(2); 
 }
+```
 
-
+```typescript
 // Error - TS2531: Object is possibly 'null'.
 document.querySelector('.menu-item').innerHTML;
 
@@ -456,8 +678,7 @@ document.querySelector('.menu-item')!.innerHTML;
 ```
 
 
-## 타입 가드 (Guards)
-타입 단언을 여러 번 사용하게 되는 경우 유용  
+## 타입 가드 (Guards) - 타입 단언을 여러 번 사용하게 되는 경우 유용  
 `타입 가드는 NAME is TYPE 형태의 타입 술부(Predicate)를 반환 타입으로 명시한 함수`  
 ```typescript
 // 일반적 타입 단언 사용 방식
@@ -494,55 +715,7 @@ function someFunc(val: string | number) {
 -----
 
 
-## 타입변환 (타입스크립트는 '타입단언'이라는 용어로 사용)
-타입이 있는 언어들은 특정 타입의 변숫값을 `다른 타입의 값으로 변환할 수 있는 기능`을 제공합니다.   
-이를 `타입변환(type conversion)`이라고 합니다.
-```typescript
-let person: object = { name: 'test' };
-console.log(person.name); // 'object' 형식에 'name' 속성이 없습니다. 에러!
-```
-
-인터페이스 방식 (추천)
-```typescript
-interface personObject {
-	name: string,
-};
-let person: personObject = { name: 'test' };
-console.log(person.name);
-```
-
-타입변환 방식
-```typescript
-let person: object = { name: 'test' };
-(<{name: string}>person).name;
-```
-
-`타입스크립트는 독특하게 타입 변환이 아닌 타입 단언(type assertion)이라는 용어를 사용`합니다.
-```
-(<타입>객체)
-
-또는
-
-(객체 as 타입)
-```
-
-이들은 모두 ES5 자바스크립트 구문이 아닙니다.  
-따라서 `자바스크립트의 타입 변환 구문과 구분하기 위해 타입 단언이라는 용어를 사용`합니다.  
-```typescript
-interface INameable {
-	name: string
-};
-let obj: object = { name: 'YSM' };
-let name1 = (<INameable>obj).name;
-let name2 = (obj as INameable).name;
-console.log(name1, name2); // YSM YSM
-```
-
-
------
-
-
-## 타입주석 (함수 선언문에서 매개변수, 반환값)
+## 타입 주석 (함수 선언문에서 매개변수, 반환값)
 타입스크립트 함수 선언문은 자바스크립트 `함수 선언문에서 매개변수와 함수 반환값(return type)에 타입 주석`을 붙이는 다음 형태로 구성됩니다.  
 ```
 function 함수이름(매개변수1: 타입1, 매개변수2: 타입2[, ...]): 반환타입 {
@@ -554,9 +727,6 @@ function add(a: number, b: number): number {
 	return a + b;
 }
 ```
-
-
------
 
 
 ## 함수 시그니처 (함수의 타입)
@@ -605,7 +775,8 @@ let result = calc.add(1).add(2).multiply(3).multiply(4).value;
 -----
 
 
-## 제네릭 방식 타입
+## 제네릭 방식 타입 - 타입을 인수로 받아서 사용
+`사용 시점에 타입을 선언할 수 있는 방법을 제공`  
 타입을 `T 와 같은 일종의 변수(타입 변수)로 취급하는 것`을 `제네릭(generics)타입`이라고 합니다.  
 
 > <u>컴파일러는 T 의 의미를 알 수 있어야 합니다.  
@@ -617,17 +788,26 @@ const 함수이름 = `<타입변수>`(매개변수: 타입변수): 타입변수 
 하지만 대개의 경우 T를 사용한다. 여기에서 T를 타입 변수(Type variables)라고 한다.   
 
 ```typescript
+function toArray<T>(a: T, b: T): T[] {
+	return [a, b];
+}
+
+toArray<number>(1, 2);
+toArray<string>('1', '2');
+toArray<string | number>(1, '2');
+toArray<number>(1, '2'); // Error
+```
+
+`타입 추론을 활용해, 사용 시점에 타입을 제공하지 않을 수 있음`  
+```typescript
 const arrayLength = <T>(array: T[]): number => array.length;
 const isEmpty = <T>(array: T[]): boolean => arrayLength<T>(array) == 0;
 
 let numArray: number[] = [1, 2, 3];
 let strArray: string[] = ['Hello', 'World'];
 
-arrayLength(numArray); 
-// 또는 arrayLength<number>(numArray);
-
-isEmpty([]);
-// 또는 isEmpty<number>([]);
+arrayLength(numArray); // 타입 추론
+isEmpty([]); // 타입 추론
 ```
 
 > 두 개 이상의 타입 변수  
@@ -640,6 +820,7 @@ toPair<string, number>('1', 1); // [ '1', 1 ]
 ```
 <br>
 
+
 ## 제네릭 함수의 타입 추론
 `제네릭 형태로 구현된 함수는 원칙적으로는 타입변수를 명시`해줘야 합니다.
 ```typescript
@@ -650,6 +831,7 @@ console.log(identoty(true)); // true - 타입 추론 방식
 하지만 이런 코드는 번거로워서 `타입스크립트는 타입 변수 부분을 생략할 수 있게 합니다.`   
 타입스크립트는 타입 변수가 생략된 제네릭 함수를 만나면 타입 추론을 통해 생략된 타입을 찾아냅니다.  
 <br>
+
 
 ## 제네릭 함수의 함수 시그니처
 타입스크립트는 어떤 경우 `함수 시그니처의 매개변수 부분에 변수 이름을 기입하라고 요구`합니다.  
@@ -685,25 +867,6 @@ function forcePure(array: readonly number[]) {
 -----
 
 
-## 반복기 (iterator)
-```typescript
-
-```
-
-
-## 생성기 (generator)
-`function*` 키워드  
-`yield`키워드  
-`yield*` 키워드  
-
-```typescript
-
-```
-
-
------
-
-
 ## 함수형 프로그래밍이란?
 함수형 프로그래밍은 순수 함수와 선언형 프로그래밍의 토대 위에 함수 조합(function composition)과 모나드 조합(monadic composition)으로 코드를 설계하고 구현하는 기법입니다.  
 <br>
@@ -727,13 +890,6 @@ type Type1Func<T> = (T) => void;
 type Type2Func<T, Q> = (T, Q) = > void;
 type Type3Func<T, Q, R> = (T, Q) => R; // T와 Q타입 값을 입력 받아 R타입 값을 반환
 ```
-
-
------
-
-
-## 람다 라이브러리 (함수형 유틸리티 라이브러리)
-
 
 
 -----
@@ -819,7 +975,7 @@ printValue(new Valuable<number[]>([1, 2, 3])); // [1, 2, 3]
 <br>
 
 
-## 제네릭 타입 제약 - 제약 조건(Constraints)   
+## 제네릭 타입 제약, 제약 조건(Constraints)   
 `extends 키워드를 사용하는 제약 조건을 추가`  
 `T extends U`  
 ```typescript
@@ -904,6 +1060,18 @@ type MyType<T> =
 ```
 
 
+## infer
+`infer 키워드를 사용해 타입 변수의 타입 추론(Inference) 여부를 확인할 수 있음`  
+U가 추론 가능한 타입이면 참, 아니면 거짓 `T extends infer U ? X : Y`   
+```typescript
+// 타입 변수 R은 MyType<number>에서 받은 타입 number가 되고 infer 키워드를 통해 타입 추론이 가능한지 확인
+// number 타입은 당연히 타입 추론이 가능하니 R을 반환하게 됩니다.(만약 R을 타입 추론할 수 없다면 null이 반환됩니다)
+// 결과적으로 MyType<number>는 number를 반환하고 변수 a는 123을 할당할 수 있습니다.
+type MyType<T> = T extends infer R ? R : null;
+const a: MyType<number> = 123;
+```
+
+
 -----
 
 
@@ -979,12 +1147,33 @@ class Dog implements IAnimal {
 -----
 
 
-## 모나드
+## 모듈의 타입 선언(Ambient module declaration)
+모듈 구현(implement)과 타입 선언(declaration)이 동시에 이뤄지는 타입스크립트와 달리,  
+구현만 존재하는 자바스크립트 모듈(E.g. Lodash)을 사용하는 경우, 컴파일러가 이해할 수 있는 모듈의 타입 선언이 필요하며,   
+이를 대부분 `.d.ts파일로 만들어 제공하`게 됩니다.  
+1. 루트 경로에 lodash.d.ts 파일을 생성  
+2. module 키워드를 사용해 모듈 이름을 명시  
+```typescript
+// lodash.d.ts
 
+// 모듈의 타입 선언(Ambient module declaration)
+// 타입스크립트 컴파일러가 이해할 수 있도록 declare 키워드를 통해 선언
+declare module 'lodash' {
+	// 1. 타입(인터페이스) 선언
+	interface ILodash {
+		camelCase(str?: string): string
+	}
+
+	// 2. 타입(인터페이스)을 가지는 변수 선언
+	const _: ILodash;
+
+	// 3. 내보내기(CommonJS)
+	export = _;
+}
+```
 
 
 ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- 
-
 
 
 # 타입스크립트 프로젝트 생성
@@ -1733,6 +1922,7 @@ getProperty(obj, "z"); // error: "z"는 "a", "b", "c" 속성에 해당하지 않
 
 
 # 유틸리티
+https://www.typescriptlang.org/docs/handbook/utility-types.html  
 > TypeScript는 공통 타입 변환을 용이하게 하기 위해 몇 가지 유틸리티 타입을 제공  
 * `Partial<T>` : T의 모든 프로퍼티를 선택적으로 만드는 타입을 구성
 * `Readonly<T>` : T의 모든 프로퍼티를 읽기 전용(readonly)으로 설정한 타입을 구성
