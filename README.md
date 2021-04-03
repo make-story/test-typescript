@@ -5,39 +5,22 @@
 https://typescript-kr.github.io/  
 https://heropy.blog/2020/01/27/typescript/  
 
+https://typescript-kr.github.io/  
+https://heropy.blog/2020/01/27/typescript/  
+https://joshua1988.github.io/ts/guide/enums.html#%EB%AC%B8%EC%9E%90%ED%98%95-%EC%9D%B4%EB%84%98  
+http://typescript-handbook-ko.org/pages/generics.html  
+https://velog.io/@zeros0623/TypeScript-%EA%B3%A0%EA%B8%89-%ED%83%80%EC%9E%85  
+https://typescript-kr.github.io/pages/tutorials/typescript-in-5-minutes.html  
+  
+- 타입스크립트 Element Type   
+https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.htmlelement.html  
+  
+- 타입스크립트 고급
+https://typescript-kr.github.io/pages/advanced-types.html  
 
-## 유용한 자바스크립트 참고
-- Optional chaining   
-?. 연산자는 . 체이닝 연산자와 유사하게 작동하지만, 만약 참조가 nullish (null 또는 undefined)이라면, 에러가 발생하는 것 대신에 표현식의 리턴 값은 undefined로 단락된다.
-```javascript
-const adventurer = {
-	name: 'Alice',
-	cat: {
-		name: 'Dinah'
-	}
-};
-
-const dogName = adventurer.dog?.name;
-console.log(dogName);
-// expected output: undefined
-
-console.log(adventurer.someNonExistentMethod?.());
-// expected output: undefined
-```
-
-- Nullish 병합 연산자  
-일반적으로 논리 연산자 ||를 사용해 Falsy 체크(0, "", NaN, null, undefined를 확인)하는 경우가 많습니다.  
-여기서 0이나 "" 값을 유효 값으로 사용하는 경우 원치 않는 결과가 발생할 수 있는데, 이럴 때 유용한 Nullish 병합(Nullish Coalescing) 연산자 ??를 사용합니다.  
-```javascript
-const foo = null ?? 'Hello nullish.';
-console.log(foo); // Hello nullish.
-
-const bar = false ?? true;
-console.log(bar); // false
-
-const baz = 0 ?? 12;
-console.log(baz); // 0
-```
+  
+- 타입스크립트 + 리덕스
+https://react-etc.vlpt.us/07.typescript-redux.html  
 
 
 -----
