@@ -11,9 +11,11 @@ https://joshua1988.github.io/ts/guide/enums.html#%EB%AC%B8%EC%9E%90%ED%98%95-%EC
 http://typescript-handbook-ko.org/pages/generics.html  
 https://velog.io/@zeros0623/TypeScript-%EA%B3%A0%EA%B8%89-%ED%83%80%EC%9E%85  
 https://typescript-kr.github.io/pages/tutorials/typescript-in-5-minutes.html  
-  
+
+
 - 타입스크립트 Element Type   
 https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.htmlelement.html  
+  
   
 - 타입스크립트 고급
 https://typescript-kr.github.io/pages/advanced-types.html  
