@@ -231,7 +231,7 @@ country2 = '러시아'; // Error - TS2322: Type '"러시아"' is not assignable 
 
 
 ## object    
-`typeof 연산자가 "object"로 반환하는 모든 타입이 해당 됨`  
+`typeof 연산자 실행 결과로 "object" 반환하는 모든 타입이 해당 됨`  
 컴파일러 옵션에서 엄격한 타입 검사(strict)를 true로 설정하면, null은 포함하지 않음  
 ```typescript
 let obj: object = {}; 
