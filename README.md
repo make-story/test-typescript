@@ -24,6 +24,10 @@ https://typescript-kr.github.io/pages/advanced-types.html
 - 타입스크립트 + 리덕스
 https://react-etc.vlpt.us/07.typescript-redux.html  
 
+- 타입 체크
+```
+tsc --noemit
+```
 
 -----
 
