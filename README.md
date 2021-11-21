@@ -126,7 +126,7 @@ export default function getItems(user: IUser): Result {
 ```
 
 
-## 유니언 (Union) - 'OR' - '|'
+## 유니온 (Union) - 'OR' - '|'
 `2개 이상의 타입을 허용하는 경우` 
 ```typescript
 let union: (string | number);
@@ -202,7 +202,7 @@ console.log(item1[1]); // 'b' is string.
 console.log(item1['0']); // Error - TS7015: Element implicitly has an 'any' type because index expression is not of type 'number'.
 
 
-// 유니온 활용
+// 유니온 (union) 활용
 interface IItemUnion {
 	[itemIndex: number]: string | boolean | number[]
 }
@@ -740,30 +740,6 @@ let g: stringNumberFunc = function(c: string, d: number): void {}
 -----
 
 
-## 메서드 체인 (method chain)
-`return this;`
-```typescript
-export class Calculator {
-	constructor(public value: number = 0) {
-
-	}
-	add(value: number) {
-		this.value += value;
-		return this;
-	}
-	multiply(value: number) {
-		this.value *= value;
-		return this;
-	}
-}
-let calc = new Calculator();
-let result = calc.add(1).add(2).multiply(3).multiply(4).value;
-```
-
-
------
-
-
 ## 제네릭 방식 타입 - 타입을 인수로 받아서 사용
 `사용 시점에 타입을 선언할 수 있는 방법을 제공`  
 타입을 `T 와 같은 일종의 변수(타입 변수)로 취급하는 것`을 `제네릭(generics)타입`이라고 합니다.  
@@ -1047,6 +1023,9 @@ type MyType<T> =
 	T extends null ? 'Nul' :
 	'Obj';
 ```
+
+
+-----
 
 
 ## infer
@@ -1368,7 +1347,7 @@ function test(this: 타입) {
 
 # `<Type>` 과 `as Type`
 > 타입 단언, 타입 캐스팅, 다운 캐스팅, 강제형변환  
-> 타입 단언 문법은 `<Type>` 과 as Type 으로 두 종류  
+> 타입 단언 문법은 `<Type>` 과 `as Type` 으로 두 종류  
 > JSX 를 사용하는 경우 `<Type>` 키워드는 JSX 의 문법과 겹치기 때문에 불편  
 
 ```typescript
@@ -1930,3 +1909,26 @@ https://www.typescriptlang.org/docs/handbook/utility-types.html
 * `OmitThisParameter`
 * `ThisType<T>`
 
+
+----------
+
+
+## 메서드 체인 (method chain)
+`return this;`
+```typescript
+export class Calculator {
+	constructor(public value: number = 0) {
+
+	}
+	add(value: number) {
+		this.value += value;
+		return this;
+	}
+	multiply(value: number) {
+		this.value *= value;
+		return this;
+	}
+}
+let calc = new Calculator();
+let result = calc.add(1).add(2).multiply(3).multiply(4).value;
+```
